@@ -1,0 +1,17 @@
+{
+  "name": "mmm-quoteoftheday",
+  "version": "1.0.0",
+  "description": "Give you a random quote at a set interval",
+  "main": "MMM-QuoteOfTheDay.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kien Vu",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "async": "^2.1.2",
+    "crypto": "0.0.3",
+    "http": "0.0.0"
+  }
+}
