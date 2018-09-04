@@ -1,0 +1,14 @@
+.backgroundSlideShow,
+.gradient {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.backgroundSlideShow {
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+}

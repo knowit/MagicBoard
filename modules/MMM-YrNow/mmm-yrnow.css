@@ -1,0 +1,48 @@
+.MMM-YrNow {
+    display: inline-block;
+}
+
+.MMM-YrNow .precipText {
+    margin: 0px;
+    white-space: nowrap;
+}
+
+.MMM-YrNow .animation {
+    vertical-align: middle;
+}
+
+.MMM-YrNow img.umbrella {
+    width: 90px;
+    margin-bottom: 10px;
+}
+
+.MMM-YrNow img, .MMM-YrNow span {
+    position: relative;
+    display: inline-block;
+    padding-right: 20px;
+    vertical-align: middle;
+}
+
+.MMM-YrNow img.weatherSymbol {
+    width: 150px;
+}
+
+.MMM-YrNow .forecast {
+    display: inline-block;
+}
+
+.MMM-YrNow .temperature {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.MMM-YrNow #rain {
+  height: 70px;
+  width: 90px;
+  margin-bottom: -20px;
+}
+
+.MMM-YrNow #rain--1, .MMM-YrNow #rain--2, .MMM-YrNow #rain--3 {
+  fill: #00B9F1;
+  -webkit-transition: opacity 600ms cubic-bezier(0.645, 0.045, 0.355, 1);
+}
