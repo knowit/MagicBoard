@@ -15,7 +15,7 @@ Module.register("MMM-iFrame",{
                                 updateInterval: 0.5 * 60 * 1000,
                                 url: ["http://magicmirror.builders/"],
                                 scrolling: "no"
-		},
+                },
 
         start: function () {
                 self = this;
