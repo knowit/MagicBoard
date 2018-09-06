@@ -108,7 +108,7 @@ var config = {
 			position: "lower_third",	// This can be any of the regions.
 			config: {
 				// See "Configuration options" for more information.
-				url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=2&from=1536121977757&to=1536143577757&theme=dark, http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=6&from=1536122117527&to=1536143717527&theme=dark", "http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=4&from=1536122137628&to=1536143737629&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
+				url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=2&theme=dark, http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=6&theme=dark", "http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=4&&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
 				updateInterval: 0.5 * 60 * 1000, // rotate URLs every 30 seconds
 				width: "80%", // Optional. Default: 100%
 				height: "600px" //Optional. Default: 100px
