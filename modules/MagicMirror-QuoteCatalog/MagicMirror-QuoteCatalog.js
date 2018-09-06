@@ -16,8 +16,11 @@ Module.register("MagicMirror-QuoteCatalog",{
         updateInterval: 300,    // How often a new quote gets displayed.
         fadeSpeed: 5,           // How fast to fade out and back in when changing quotes.
         quotes: {
-            quotes : ["Hello World ~ Test"
-
+            quotes : ["How do I turn it off and on again? ~ Anders Aarsæther",
+                "+++ Divide By Cucumber Error. Please Reinstall Universe And Reboot +++ ~ Tanja Gruschke",
+                "\"Considered Harmful\" Considered Harmful ~ Hugo Wallenburg",
+                "Det er bedre med to reparatører enn ingen reparatører... ~ Kristoffer Langerød",
+                "Building workspace...\t ~ Sigmund Marius Nilssen"
             ]
         },
     },
