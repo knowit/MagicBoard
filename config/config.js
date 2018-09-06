@@ -33,7 +33,7 @@ var config = {
                 ignoreModules: ["MMM-BackgroundSlideshow", "updatenotification", "clock", "MMM-YrNow", "MMM-iFrame", "MMM-Placeholder"],
                 mode: "slides",
                 slides: [
-                    ["calendar", "MMM-QuoteOfTheDay"],
+                    ["calendar", "MagicMirror-QuoteCatalog"],
                     ["MMM-OsloCityBike", "MMM-Ruter"]
                 ]
             }
@@ -110,7 +110,7 @@ var config = {
 				// See "Configuration options" for more information.
 				url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=2&theme=dark, http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=6&theme=dark", "http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=4&&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
 				updateInterval: 0.5 * 60 * 1000, // rotate URLs every 30 seconds
-				width: "80%", // Optional. Default: 100%
+				width: "100%", // Optional. Default: 100%
 				height: "600px" //Optional. Default: 100px
 			}
 		},
@@ -132,7 +132,7 @@ var config = {
             }
         },
         {
-            module: "MMM-QuoteOfTheDay",
+            module: "MagicMirror-QuoteCatalog",
             position: "middle_center"
 		},
 		{
