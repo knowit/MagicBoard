@@ -15,7 +15,7 @@ app.setup = function() {
     caPath: __dirname + "/certs/root-CA.crt",
     clientId: "MagicMirror" + (new Date().getTime()),
     region: "us-east-1",
-    host: "amzn1.ask.skill.4862813f-5e3d-4eb5-8081-403af358aa5e.iot.us-east-1.amazonaws.com",
+    host: "",
   });
 
   /**

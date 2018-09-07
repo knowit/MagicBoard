@@ -30,11 +30,12 @@ var config = {
             module: "MMM-Carousel",
             config: {
                 transitionInterval: 1000 * 60 * 0.5, // 30 sek
-                ignoreModules: ["MMM-BackgroundSlideshow", "updatenotification", "clock", "MMM-YrNow", "MMM-iFrame", "MMM-Placeholder"],
+                ignoreModules: ["MMM-BackgroundSlideshow", "updatenotification", "clock", "MMM-YrNow", "MMM-MirrorMirrorOnTheWall"/*, "MMM-Placeholder"*/],
                 mode: "slides",
                 slides: [
-                    ["calendar", "MagicMirror-QuoteCatalog"],
-                    ["MMM-OsloCityBike", "MMM-Ruter"]
+                    ["calendar", "MagicMirror-QuoteCatalog", "MMM-Twitter"],
+                    ["MMM-iFrame"],
+                    ["MMM-OsloCityBike", "MMM-Ruter"],
                 ]
             }
         },
@@ -102,18 +103,18 @@ var config = {
                     max: 10.762195
                 }
             }
-		},
-		{
-			module: "MMM-iFrame",
-			position: "lower_third",	// This can be any of the regions.
-			config: {
-				// See "Configuration options" for more information.
-				url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=2&theme=dark, http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=6&theme=dark", "http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=4&&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
-				updateInterval: 0.5 * 60 * 1000, // rotate URLs every 30 seconds
-				width: "100%", // Optional. Default: 100%
-				height: "600px" //Optional. Default: 100px
-			}
-		},
+        },
+        {
+            module: "MMM-iFrame",
+            position: "lower_third",	// This can be any of the regions.
+            config: {
+                // See "Configuration options" for more information.
+                url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=2&theme=dark, http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=6&theme=dark", "http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=4&&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
+                updateInterval: 0.5 * 60 * 1000, // rotate URLs every 30 seconds
+                width: "100%", // Optional. Default: 100%
+                height: "600px" //Optional. Default: 100px
+            }
+        },
         {
             module: "MMM-Ruter",
             header: "Heimdalsgate",
@@ -134,11 +135,32 @@ var config = {
         {
             module: "MagicMirror-QuoteCatalog",
             position: "middle_center"
-		},
-		{
-            module: "MMM-Placeholder",
-            position: "bottom_center"
-		},
+        },
+        {
+            module: 'MMM-Twitter',
+            position: 'top_right',
+            config: {
+                consumer_key: '',
+                consumer_secret: '',
+                access_token_key: '',
+                access_token_secret: '',
+                screenName: '',
+                listToShow: 'TIMELINE',
+                maxTweetAgeMins: 1440 * 28,
+                excludeRetweets: false,
+                excludeTweetsWithQuotes: false,
+                excludeMediaTweets: false,
+                excludeLinkTweets: false,
+                excludeTweetsWithoutText: false,
+                maxTweetsPerUser: 'zero',
+                allowSpecialCharacters: true,
+            }
+        },
+        {
+            module: "MMM-MirrorMirrorOnTheWall",
+            position: "bottom_center",
+            config: {}
+        },
     ]
 
 };
