@@ -141,7 +141,7 @@ Module.register("calendar", {
 			if(this.config.timeFormat === "dateheaders"){
 				if(lastSeenDate !== dateAsString){
 					var dateRow = document.createElement("tr");
-					dateRow.className = "normal"
+					dateRow.className = "medium normal"
 					var dateCell = document.createElement("td");
 
 					dateCell.colSpan = "3";
@@ -161,7 +161,7 @@ Module.register("calendar", {
 				eventWrapper.style.cssText = "color:" + this.colorForUrl(event.url);
 			}
 
-			eventWrapper.className = "normal";
+			eventWrapper.className = "medium normal";
 
 			if (this.config.displaySymbol) {
 				var symbolWrapper = document.createElement("td");

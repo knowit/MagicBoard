@@ -238,23 +238,23 @@ Module.register("MMM-Ruter",{
 	
 	getTableHeaderRow: function() {
 		var thLine = document.createElement("th");
-		thLine.className = "horizontal-spacing light";
+		thLine.className = "horizontal-spacing light normal";
 		thLine.appendChild(document.createTextNode(this.translate("LINEHEADER")));
 
 		var thDestination = document.createElement("th");
-		thDestination.className = "horizontal-spacing light";
+		thDestination.className = "horizontal-spacing light normal";
 		thDestination.appendChild(document.createTextNode(this.translate("DESTINATIONHEADER")));
 		
 		var thPlatform = document.createElement("th");
-		thPlatform.className = "horizontal-spacing light";
+		thPlatform.className = "horizontal-spacing light normal";
 		thPlatform.appendChild(document.createTextNode(this.translate("PLATFORMHEADER")));
 
 		var thStopName = document.createElement("th");
-		thStopName.className = "horizontal-spacing light"
+		thStopName.className = "horizontal-spacing light normal"
 		thStopName.appendChild(document.createTextNode(this.translate("STOPNAMEHEADER")));
 		
 		var thTime = document.createElement("th");
-		thTime.className = "horizontal-spacing light time"
+		thTime.className = "horizontal-spacing light time normal"
 		thTime.appendChild(document.createTextNode(this.translate("TIMEHEADER")));
 
 		var thead = document.createElement("thead");
@@ -270,7 +270,7 @@ Module.register("MMM-Ruter",{
 	
 	getTableRow: function(journey) {
 		var tdLine = document.createElement("td");
-		tdLine.className = "horizontal-spacing line";
+		tdLine.className = "horizontal-spacing line normal";
 		var txtLine = document.createTextNode(journey.lineName);
 		tdLine.appendChild(txtLine);
 		
@@ -280,18 +280,18 @@ Module.register("MMM-Ruter",{
 		
 		if (this.config.showPlatform) {
 			var tdPlatform = document.createElement("td");
-			tdPlatform.className = "horizontal-spacing platform";
+			tdPlatform.className = "horizontal-spacing platform normal";
 			tdPlatform.appendChild(document.createTextNode(journey.platform));
 		}
 
 		if (this.config.showStopName) {
 			var tdStopName = document.createElement("td");
-			tdStopName.className = "horizontal-spacing light";
+			tdStopName.className = "horizontal-spacing light normal";
 			tdStopName.appendChild(document.createTextNode(journey.stopName));	
 		}
 		
 		var tdTime = document.createElement("td");
-		tdTime.className = "time light";
+		tdTime.className = "time light normal";
 		tdTime.appendChild(document.createTextNode(this.formatTime(journey.time)));
 		
 		var tr = document.createElement("tr");

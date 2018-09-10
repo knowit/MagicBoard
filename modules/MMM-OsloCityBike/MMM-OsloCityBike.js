@@ -105,11 +105,11 @@ Module.register("MMM-OsloCityBike",{
 	
 	getTableHeaderRow: function() {
 		var thStation = document.createElement("th");
-		thStation.className = "light";
+		thStation.className = "light normal";
 		thStation.appendChild(document.createTextNode(this.translate("STATIONHEADER")));
 
 		var thBikes = document.createElement("th");
-		thBikes.className = "light";
+		thBikes.className = "light normal";
 		thBikes.appendChild(document.createTextNode(this.translate("BIKEHEADER")));
 
 		var thead = document.createElement("thead");

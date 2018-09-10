@@ -96,16 +96,16 @@ Module.register("MagicMirror-QuoteCatalog",{
         var wrapper = document.createElement("div");
 
         var quote = document.createElement("div");
-        quote.className = "bright small light";
+        quote.className = "bright medium light";
         quote.style.textAlign = 'justify';
         quote.style.margin = '0 auto';
-        quote.style.maxWidth = '400px';
+        quote.style.maxWidth = '800px';
         quote.innerHTML = qMsg;
 
         wrapper.appendChild(quote);
 
         var author = document.createElement("div");
-        author.className = "light small dimmed";
+        author.className = "light medium dimmed";
         author.innerHTML = "~ " + qAuthor;
 
         wrapper.appendChild(author);

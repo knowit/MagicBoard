@@ -123,28 +123,41 @@ Module.register("MMM-Twitter", {
         var calcTime = nowTime - thenTime;
         var diffSecs = Math.round(calcTime / 1000);
         if (diffSecs < 60) {
-            return diffSecs + "s";
+            return diffSecs + " seconds ago";
         }
         if (diffSecs < (60 * 60)) {
             var diffMins = Math.round(diffSecs / 60);
-            return diffMins + "m";
+            return diffMins + " minutes ago";
         }
-        var diffHours = Math.round(diffSecs / (60 * 60));
-        return diffHours + "h";      
+        if (diffSecs < 60 * 60 * 24){
+            var diffHours = Math.round(diffSecs / (60 * 60));
+            return diffHours + " hours ago";
+        }
+        if(diffSecs < 60 * 60 * 24 * 7) {
+            var diffDays = Math.round(diffSecs / (60 * 60 * 24));
+            return diffDays + " days ago";
+        }
+        /*if(diffSecs < 60 * 60 * 24 * 7 * 28) {
+            var diffWeeks = Math.round(diffSecs / (60 * 60 * 24 * 7));
+            return diffDays;
+        }*/
+
+        var diffWeeks = Math.round(diffSecs / (60 * 60 * 24 * 7));
+        return diffWeeks + " weeks ago";
     },
 	// the get dom handler
 	getDom: function() {
         // if an error, say so
         if (this.errorMessage !== null) {
             var wrapper = document.createElement("div");
-			wrapper.className = "small";
+			wrapper.className = "small normal";
 			wrapper.innerHTML = this.errorMessage;
 			return wrapper;	
         }
 		// if nothing loaded yet, put in placeholder text
 		if (!this.loaded) {
 			var wrapper = document.createElement("div");
-			wrapper.className = "small";
+			wrapper.className = "small normal";
 			wrapper.innerHTML = "Awaiting Update...";
 			return wrapper;			
 		}
@@ -157,21 +170,21 @@ Module.register("MMM-Twitter", {
 			var tweetTR = document.createElement("tr");    
    			var tweetTD = document.createElement("td");
   			tweetTD.align = "right";
-			tweetTD.className = "xsmall";
+			tweetTD.className = "small normal";
             tweetTD.style = colorValue;	
-            tweetTD.width = this.config.moduleWidth;
+            tweetTD.width = "400px";
 			tweetTD.innerHTML = tweet.name + ' - ' + this.getStringTimeDifference(tweet.timestamp);
 			tweetTR.appendChild(tweetTD);            
 			var usertimeTR = document.createElement("tr");
 			var usertimeTD = document.createElement("td");
 			usertimeTD.align = "left";
-			usertimeTD.className = "small";
+			usertimeTD.className = "medium normal";
             usertimeTD.style = colorValue;
 			usertimeTD.width = this.config.moduleWidth;
 			usertimeTD.innerHTML = tweet.text;
 			usertimeTR.appendChild(usertimeTD);
 			wrapper.appendChild(usertimeTR);
-			wrapper.appendChild(tweetTR);			
+			wrapper.appendChild(tweetTR);
 		}
 		return wrapper;	
 	}
