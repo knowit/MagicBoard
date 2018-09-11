@@ -5,7 +5,7 @@
  * MIT Licensed.
  */
 
-var ical = require("./vendor/ical.js");
+var ical = require("./vendor/ical.js/index.js");
 var moment = require("moment");
 
 var CalendarFetcher = function(url, reloadInterval, excludedEvents, maximumEntries, maximumNumberOfDays, auth) {

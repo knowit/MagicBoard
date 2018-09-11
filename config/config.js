@@ -31,10 +31,10 @@ var config = {
             config: {
                 rotationTime: 1000 * 60 * 0.2,
                 modules:
-                    [/*["calendar", "MagicMirror-QuoteCatalog", "MMM-MotionSensor", "MMM-Twitter"],*/
+                    [["calendar", "MagicMirror-QuoteCatalog", "MMM-MotionSensor", "MMM-Twitter"],
                         ["MMM-iFrame"],
-                        /*["MMM-OsloCityBike", "MMM-Ruter", "MMM-YrThen"],*/],
-                excludes: ["MMM-BackgroundSlideshow", "updatenotification", "clock", "MMM-YrNow", "MMM-SimpleLogo", /*"MMM-Voice-Commands" /*"MMM-MirrorMirrorOnTheWall"*/],
+                        ["MMM-OsloCityBike", "MMM-Ruter", "MMM-YrThen"],],
+                excludes: ["MMM-BackgroundSlideshow", "alert", "clock", "MMM-YrNow", "MMM-SimpleLogo", /*"MMM-Voice-Commands" /*"MMM-MirrorMirrorOnTheWall"*/],
             }
         },
         {
@@ -55,10 +55,10 @@ var config = {
                 }
             }
         },
-        {
+        /*{
             module: "MMM-MotionSensor",
             position: "fullscreen_above"
-        },
+        },*/
         {
             module: "alert",
         },

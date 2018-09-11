@@ -1,4 +1,4 @@
-var ical = require('ical')
+var ical = require('modules/calendar/vendor/ical.js/ical')
   , months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 
