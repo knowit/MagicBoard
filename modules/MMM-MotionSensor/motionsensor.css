@@ -1,0 +1,10 @@
+
+.MMM-MotionSensor .fullscreen-black {
+    display: block;
+    z-index: 5000;
+    background-color: black;
+}
+
+.MMM-MotionSensor .hide {
+    display: none;
+}

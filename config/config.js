@@ -31,7 +31,7 @@ var config = {
             config: {
                 rotationTime: 1000 * 60 * 0.2,
                 modules:
-                    [/*["calendar", "MagicMirror-QuoteCatalog", "MMM-Twitter"],*/
+                    [/*["calendar", "MagicMirror-QuoteCatalog", "MMM-MotionSensor", "MMM-Twitter"],*/
                         ["MMM-iFrame"],
                         /*["MMM-OsloCityBike", "MMM-Ruter", "MMM-YrThen"],*/],
                 excludes: ["MMM-BackgroundSlideshow", "updatenotification", "clock", "MMM-YrNow", "MMM-SimpleLogo", /*"MMM-Voice-Commands" /*"MMM-MirrorMirrorOnTheWall"*/],
@@ -56,6 +56,10 @@ var config = {
             }
         },
         {
+            module: "MMM-MotionSensor",
+            position: "fullscreen_above"
+        },
+        {
             module: "alert",
         },
         {
@@ -69,10 +73,6 @@ var config = {
                 gradient: ["rgba(0, 0, 0, 0.9) 0%", "rgba(0, 0, 0, 0.5) 40%", "rgba(0, 0, 0, 0.5) 80%", "rgba(0, 0, 0, 0.9) 100%"],
                 gradientOpacity: 0.9,
             }
-        },
-        {
-            module: "updatenotification",
-            position: "top_bar",
         },
         {
             module: "clock",
