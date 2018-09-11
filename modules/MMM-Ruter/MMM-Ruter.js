@@ -238,23 +238,23 @@ Module.register("MMM-Ruter",{
 	
 	getTableHeaderRow: function() {
 		var thLine = document.createElement("th");
-		thLine.className = "horizontal-spacing light normal";
+		thLine.className = "horizontal-spacing normal medium";
 		thLine.appendChild(document.createTextNode(this.translate("LINEHEADER")));
 
 		var thDestination = document.createElement("th");
-		thDestination.className = "horizontal-spacing light normal";
+		thDestination.className = "horizontal-spacing normal medium";
 		thDestination.appendChild(document.createTextNode(this.translate("DESTINATIONHEADER")));
 		
 		var thPlatform = document.createElement("th");
-		thPlatform.className = "horizontal-spacing light normal";
+		thPlatform.className = "horizontal-spacing normal medium";
 		thPlatform.appendChild(document.createTextNode(this.translate("PLATFORMHEADER")));
 
 		var thStopName = document.createElement("th");
-		thStopName.className = "horizontal-spacing light normal"
+		thStopName.className = "horizontal-spacing normal medium";
 		thStopName.appendChild(document.createTextNode(this.translate("STOPNAMEHEADER")));
 		
 		var thTime = document.createElement("th");
-		thTime.className = "horizontal-spacing light time normal"
+		thTime.className = "horizontal-spacing normal time medium";
 		thTime.appendChild(document.createTextNode(this.translate("TIMEHEADER")));
 
 		var thead = document.createElement("thead");
@@ -270,28 +270,28 @@ Module.register("MMM-Ruter",{
 	
 	getTableRow: function(journey) {
 		var tdLine = document.createElement("td");
-		tdLine.className = "horizontal-spacing line normal";
+		tdLine.className = "horizontal-spacing line normal medium";
 		var txtLine = document.createTextNode(journey.lineName);
 		tdLine.appendChild(txtLine);
 		
 		var tdDestination = document.createElement("td");
-		tdDestination.className = "horizontal-spacing destination bright";
+		tdDestination.className = "horizontal-spacing destination normal medium";
 		tdDestination.appendChild(document.createTextNode(journey.destinationName));
 		
 		if (this.config.showPlatform) {
 			var tdPlatform = document.createElement("td");
-			tdPlatform.className = "horizontal-spacing platform normal";
+			tdPlatform.className = "horizontal-spacing platform normal medium";
 			tdPlatform.appendChild(document.createTextNode(journey.platform));
 		}
 
 		if (this.config.showStopName) {
 			var tdStopName = document.createElement("td");
-			tdStopName.className = "horizontal-spacing light normal";
+			tdStopName.className = "horizontal-spacing normal medium";
 			tdStopName.appendChild(document.createTextNode(journey.stopName));	
 		}
 		
 		var tdTime = document.createElement("td");
-		tdTime.className = "time light normal";
+		tdTime.className = "time normal medium";
 		tdTime.appendChild(document.createTextNode(this.formatTime(journey.time)));
 		
 		var tr = document.createElement("tr");

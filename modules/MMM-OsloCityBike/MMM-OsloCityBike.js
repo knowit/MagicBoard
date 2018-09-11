@@ -46,7 +46,7 @@ Module.register("MMM-OsloCityBike",{
 		if (this.stations && this.stations.length > 0) {
 			
 			var table = document.createElement("table");
-			table.className = "ruter medium";
+			table.className = "ruter medium normal";
 			
 			table.appendChild(this.getTableHeaderRow());
 			
@@ -105,11 +105,11 @@ Module.register("MMM-OsloCityBike",{
 	
 	getTableHeaderRow: function() {
 		var thStation = document.createElement("th");
-		thStation.className = "light normal";
+		thStation.className = "medium normal";
 		thStation.appendChild(document.createTextNode(this.translate("STATIONHEADER")));
 
 		var thBikes = document.createElement("th");
-		thBikes.className = "light normal";
+		thBikes.className = "medium normal";
 		thBikes.appendChild(document.createTextNode(this.translate("BIKEHEADER")));
 
 		var thead = document.createElement("thead");
@@ -122,11 +122,11 @@ Module.register("MMM-OsloCityBike",{
 	
 	getTableRow: function(station) {
 		var tdStation = document.createElement("td");
-		tdStation.className = "station";
+		tdStation.className = "station normal";
 		tdStation.appendChild(document.createTextNode(station.Title));
 		
 		var tdBikes = document.createElement("td");
-		tdBikes.className = "destination bright";
+		tdBikes.className = "destination normal";
 		tdBikes.appendChild(document.createTextNode(station.Availability.Bikes));
 		
 		var tr = document.createElement("tr");

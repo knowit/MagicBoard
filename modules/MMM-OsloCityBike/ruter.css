@@ -5,11 +5,9 @@ table.ruter { width: 100%; border: 1px;}
 
 .ruter .station {
 	padding-right: 5px;
-    color: white;
 }
 
 .ruter .title {
   padding-left: 0;
   padding-right: 0;
-    color: white;
 }

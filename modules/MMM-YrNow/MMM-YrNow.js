@@ -134,7 +134,7 @@ Module.register('MMM-YrNow', {
     getUmbrella: function() {
         var umbrella = document.createElement('img');
         umbrella.className = 'umbrella';
-        umbrella.src = this.file('images/umbrella.svg');
+        umbrella.src = this.file('images/umbrella2.svg');
         return umbrella;
     },
 
