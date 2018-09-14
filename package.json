@@ -69,7 +69,7 @@
     "moment": "latest",
     "request": "^2.83.0",
     "rrule-alt": "^2.2.7",
-    "serialport": "^7.0.2",
+    "serialport": "^6.2.1",
     "simple-git": "^1.85.0",
     "socket.io": "^2.0.4",
     "twitter": "^1.7.1",
