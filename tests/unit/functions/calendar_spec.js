@@ -13,7 +13,7 @@ describe("Functions into modules/default/calendar/calendar.js", function() {
 
 	before(function() {
 		// load calendar.js
-		require("../../../modules/default/calendar/calendar.js");
+		require("../../../modules/calendar/calendar.js");
 	});
 
 	describe("capFirst", function() {

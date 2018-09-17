@@ -8,7 +8,7 @@
 var fs = require("fs");
 var Server = require(__dirname + "/server.js");
 var Utils = require(__dirname + "/utils.js");
-var defaultModules = require(__dirname + "/../modules/default/defaultmodules.js");
+var defaultModules = require(__dirname + "/../js/defaultmodules.js");
 var path = require("path");
 
 // Get version number.
@@ -67,7 +67,7 @@ var App = function() {
 			var config = Object.assign(defaults, c);
 			callback(config);
 		} catch (e) {
-			if (e.code == "ENOENT") {
+			if (e.code === "ENOENT") {
 				console.error(Utils.colors.error("WARNING! Could not find config file. Please create one. Starting with default configuration."));
 			} else if (e instanceof ReferenceError || e instanceof SyntaxError) {
 				console.error(Utils.colors.error("WARNING! Could not validate config file. Please correct syntax errors. Starting with default configuration."));
@@ -110,7 +110,7 @@ var App = function() {
 		var moduleFolder =  __dirname + "/../modules/" + module;
 
 		if (defaultModules.indexOf(moduleName) !== -1) {
-			moduleFolder =  __dirname + "/../modules/default/" + module;
+			moduleFolder =  __dirname + "/../modules/" + module;
 		}
 
 		var helperPath = moduleFolder + "/node_helper.js";
