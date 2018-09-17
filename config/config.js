@@ -31,16 +31,18 @@ var config = {
             config: {
                 rotationTime: 1000 * 60 * 0.2,
                 modules:
-                    [["calendar", "MagicMirror-QuoteCatalog", "MMM-MotionSensor", "MMM-Twitter"],
+                    [["calendar", "MagicMirror-QuoteCatalog", "MMM-Twitter"],
                         ["MMM-iFrame"],
-                        ["MMM-OsloCityBike", "MMM-Ruter", "MMM-YrThen"],],
-                excludes: ["MMM-BackgroundSlideshow", "MMM-Facial-Recognition", "alert", "clock", "MMM-YrNow", "MMM-SimpleLogo", /*"MMM-Voice-Commands" /*"MMM-MirrorMirrorOnTheWall"*/],
-            }
+                        ["MMM-OsloCityBike", "MMM-Ruter", "MMM-YrThen"]],
+                excludes: ["MMM-BackgroundSlideshow", "MMM-MotionSensor", "MMM-Facial-Recognition", "alert", "clock", "MMM-YrNow", "MMM-SimpleLogo"],
+            },
+            classes: 'default everyone'
         },
-        /*{
+        {
             module: "MMM-MotionSensor",
-            position: "fullscreen_above"
-        },*/
+            position: "fullscreen_above",
+            classes: 'default everyone'
+        },
         {
             module: "alert",
             classes: 'default everyone'
