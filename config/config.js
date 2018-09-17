@@ -37,10 +37,10 @@ var config = {
                 excludes: ["MMM-BackgroundSlideshow", "MMM-Facial-Recognition", "alert", "clock", "MMM-YrNow", "MMM-SimpleLogo", /*"MMM-Voice-Commands" /*"MMM-MirrorMirrorOnTheWall"*/],
             }
         },
-        /*{
+        {
             module: "MMM-MotionSensor",
             position: "fullscreen_above"
-        },*/
+        },
         {
             module: "alert",
             classes: 'default everyone'

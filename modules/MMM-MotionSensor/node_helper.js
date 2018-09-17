@@ -1,7 +1,7 @@
 const NodeHelper = require("node_helper");
 
 const SerialPort = require("serialport");
-const Readline = require("@serialport/parser-readline");
+const Readline = SerialPort.parsers.Readline;
 
 const port = new SerialPort("/dev/ttyUSB0", { baudRate: 9600 });
 const parser = port.pipe(new Readline({ delimiter: "\n" }));
