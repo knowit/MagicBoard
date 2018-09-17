@@ -34,25 +34,7 @@ var config = {
                     [["calendar", "MagicMirror-QuoteCatalog", "MMM-MotionSensor", "MMM-Twitter"],
                         ["MMM-iFrame"],
                         ["MMM-OsloCityBike", "MMM-Ruter", "MMM-YrThen"],],
-                excludes: ["MMM-BackgroundSlideshow", "alert", "clock", "MMM-YrNow", "MMM-SimpleLogo", /*"MMM-Voice-Commands" /*"MMM-MirrorMirrorOnTheWall"*/],
-            }
-        },
-        {
-            module: "MMM-Voice-Commands",
-            position: "center_middle",
-            config: {
-                debug: false, //Displays end results and errors from annyang in the Log
-                autoStart: true, //Adds annyang commands when it first starts
-                activateCommand: "hello", //Command to active all other commands
-                deactivateCommand: "goodbye", //Command to deactivate all other commands
-                alertHeard: false, //Whether an alert should be shown when annyang hears a phrase (mostly for debug)
-                commands: {
-                    "switch to (the) :page (page)": "PAGE_SELECTED",
-                    "go to (page) :number": "PAGE_SELECTED",
-                    "next (page)": "PAGE_INCREMENT",
-                    "last (page)": "PAGE_DECREMENT",
-                    "previous (page)": "PAGE_DECREMENT",
-                }
+                excludes: ["MMM-BackgroundSlideshow", "MMM-Facial-Recognition", "alert", "clock", "MMM-YrNow", "MMM-SimpleLogo", /*"MMM-Voice-Commands" /*"MMM-MirrorMirrorOnTheWall"*/],
             }
         },
         /*{
@@ -61,6 +43,7 @@ var config = {
         },*/
         {
             module: "alert",
+            classes: 'default everyone'
         },
         {
             module: "MMM-BackgroundSlideshow",
@@ -72,11 +55,13 @@ var config = {
                 slideshowSpeed: 60000 * 5,
                 gradient: ["rgba(0, 0, 0, 0.9) 0%", "rgba(0, 0, 0, 0.5) 40%", "rgba(0, 0, 0, 0.5) 80%", "rgba(0, 0, 0, 0.9) 100%"],
                 gradientOpacity: 0.9,
-            }
+            },
+            classes: 'default everyone'
         },
         {
             module: "clock",
             position: "top_left",
+            classes: 'default everyone'
         },
         {
             module: "calendar",
@@ -99,7 +84,8 @@ var config = {
                         url: ""
                     }
                 ]
-            }
+            },
+            classes: 'default everyone'
         },
         {
             module: "MMM-YrNow",
@@ -107,7 +93,8 @@ var config = {
             config: {
                 locationId: "1-2255826",
                 showWeatherForecast: true
-            }
+            },
+            classes: 'default everyone'
         },
         {
             module: 'MMM-YrThen',
@@ -115,7 +102,8 @@ var config = {
             position: 'top_right',
             config: {
                 location: '1-2255826',
-            }
+            },
+            classes: 'default everyone'
         },
         {
             module: 'MMM-Twitter',
@@ -137,7 +125,8 @@ var config = {
                 maxTweetsPerUser: 'zero',
                 allowSpecialCharacters: true,
                 displayColors: ['#fff'],
-            }
+            },
+            classes: 'default everyone'
         },
         {
             module: "MMM-OsloCityBike",
@@ -152,19 +141,49 @@ var config = {
                     min: 10.762195,
                     max: 10.762195
                 }
-            }
+            },
+            classes: 'default everyone'
         },
         {
             module: "MMM-iFrame",
             position: "lower_third",	// This can be any of the regions.
             config: {
                 // See "Configuration options" for more information.
-                url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=2&theme=dark", "http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=4&&theme=dark", "http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=6&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
+                url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=2&theme=dark", "http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=6&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
                 updateInterval: 0.5 * 60 * 1000, // rotate URLs every 30 seconds
                 width: "80%", // Optional. Default: 100%
                 height: "600px", //Optional. Default: 100px
-            }
+                uniqueID: 0,
+            },
+            classes: 'default everyone'
         },
+        {
+            module: "MMM-iFrame",
+            position: "lower_third",	// This can be any of the regions.
+            config: {
+                // See "Configuration options" for more information.
+                url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=6&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
+                updateInterval: 0.5 * 60 * 1000, // rotate URLs every 30 seconds
+                width: "80%", // Optional. Default: 100%
+                height: "600px", //Optional. Default: 100px
+                uniqueID: 1,
+            },
+            classes: 'default everyone'
+        },
+        {
+            module: "MMM-iFrame",
+            position: "lower_third",	// This can be any of the regions.
+            config: {
+                // See "Configuration options" for more information.
+                url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=4&&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
+                updateInterval: 0.5 * 60 * 1000, // rotate URLs every 30 seconds
+                width: "80%", // Optional. Default: 100%
+                height: "600px", //Optional. Default: 100px
+                uniqueID: 2,
+            },
+            classes: 'default everyone'
+        },
+
         {
             module: "MMM-Ruter",
             header: "Heimdalsgata Trikk",
@@ -181,21 +200,48 @@ var config = {
                         timeToThere: 5,
                     }
                 ]
-            }
+            },
+            classes: 'default everyone'
         },
         /*{
-            module: "MMM-MirrorMirrorOnTheWall",
-            position: "bottom_center",
-            config: {}
-        },*/
-        {
             module: "MagicMirror-QuoteCatalog",
             position: "bottom_center"
-        },
+        },*/
         {
             module: 'MMM-SimpleLogo',
             position: 'bottom_left',
-            config: {}
+            config: {},
+            classes: 'default everyone'
+        },
+        {
+            module: 'MMM-Facial-Recognition',
+            config: {
+                // 1=LBPH | 2=Fisher | 3=Eigen
+                recognitionAlgorithm: 1,
+                // Threshold for the confidence of a recognized face before it's considered a
+                // positive match.  Confidence values below this threshold will be considered
+                // a positive match because the lower the confidence value, or distance, the
+                // more confident the algorithm is that the face was correctly detected.
+                lbphThreshold: 50,
+                fisherThreshold: 250,
+                eigenThreshold: 3000,
+                // force the use of a usb webcam on raspberry pi (on other platforms this is always true automatically)
+                useUSBCam: false,
+                // Path to your training xml
+                trainingFile: 'modules/MMM-Facial-Recognition/training.xml',
+                // recognition intervall in seconds (smaller number = faster but CPU intens!)
+                interval: 2,
+                // Logout delay after last recognition so that a user does not get instantly logged out if he turns away from the mirror for a few seconds
+                logoutDelay: 15,
+                // Array with usernames (copy and paste from training script)
+                users: ["Petter", "Kien"],
+                //Module set used for strangers and if no user is detected
+                defaultClass: "default",
+                //Set of modules which should be shown for every user
+                everyoneClass: "everyone",
+                // Boolean to toggle welcomeMessage
+                welcomeMessage: true
+            }
         },
     ]
 
