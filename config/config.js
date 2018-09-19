@@ -21,7 +21,7 @@ var config = {
                                                            // or IPv4 range of 192.168.3.0 --> 192.168.3.15 use CIDR format :
                                                            // ["127.0.0.1", "::ffff:127.0.0.1", "::1", "::ffff:192.168.3.0/28"],
 
-    language: "en",
+    language: "no",
     timeFormat: 24,
     units: "metric",
 
@@ -29,11 +29,11 @@ var config = {
         {
             module: 'MMM-pages',
             config: {
-                rotationTime: 1000 * 60 * 0.2,
+                rotationTime: 1000 * 60,
                 modules:
                     [["calendar", "MagicMirror-QuoteCatalog", "MMM-Twitter"],
-                        ["MMM-Sundtcommander"],
                         ["MMM-iFrame"],
+                        ["MMM-Sundtcommander"],
                         ["MMM-OsloCityBike", "MMM-Ruter", "MMM-YrThen"]],
                 excludes: ["MMM-BackgroundSlideshow", "MMM-MotionSensor", "MMM-Facial-Recognition", "alert", "clock", "MMM-YrNow", "MMM-SimpleLogo", "MMM-Hello-Mirror"],
             },
@@ -41,6 +41,7 @@ var config = {
         },
         {
             module: "MMM-Hello-Mirror",
+            position: "center",
             classes: "default everyone",
         },
         {
@@ -80,13 +81,11 @@ var config = {
                     {
                         //  Kalender for Fag
                         symbol: "book",
-                        // url:
                         url: ""
                     },
                     {
                         //  Kalender for Events
                         symbol: "smile-o",
-                        //url:
                         url: ""
                     }
                 ]
@@ -95,7 +94,7 @@ var config = {
         },
         {
             module: "MMM-Sundtcommander",
-            position: "lower_third",
+            position: "upper_third",
             classes: 'default everyone'
         },
         {
@@ -160,10 +159,6 @@ var config = {
             position: "lower_third",	// This can be any of the regions.
             config: {
                 url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=2&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
-                updateInterval: 60 * 1000, // Rotate urls every 30 sec
-                width: "80%", // Optional. Default: 100%
-                height: "1200px", //Optional. Default: 100px
-                uniqueID: 0,
             },
             classes: 'default everyone'
         },
@@ -173,10 +168,6 @@ var config = {
             config: {
                 // See "Configuration options" for more information.
                 url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=6&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
-                updateInterval: 0.5 * 60 * 1000, // rotate URLs every 30 seconds
-                width: "80%", // Optional. Default: 100%
-                height: "600px", //Optional. Default: 100px
-                uniqueID: 1,
             },
             classes: 'default everyone'
         },
@@ -186,10 +177,6 @@ var config = {
             config: {
                 // See "Configuration options" for more information.
                 url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=4&&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
-                updateInterval: 100 * 60 * 1000, // rotate URLs every 30 seconds
-                width: "80%", // Optional. Default: 100%
-                height: "600px", //Optional. Default: 100px
-                uniqueID: 2,
             },
             classes: 'default everyone'
         },
@@ -231,7 +218,7 @@ var config = {
                 // positive match.  Confidence values below this threshold will be considered
                 // a positive match because the lower the confidence value, or distance, the
                 // more confident the algorithm is that the face was correctly detected.
-                lbphThreshold: 50,
+                lbphThreshold: 40,
                 fisherThreshold: 250,
                 eigenThreshold: 3000,
                 // force the use of a usb webcam on raspberry pi (on other platforms this is always true automatically)
@@ -239,11 +226,11 @@ var config = {
                 // Path to your training xml
                 trainingFile: 'modules/MMM-Facial-Recognition/training.xml',
                 // recognition intervall in seconds (smaller number = faster but CPU intens!)
-                interval: 2,
+                interval: 5,
                 // Logout delay after last recognition so that a user does not get instantly logged out if he turns away from the mirror for a few seconds
                 logoutDelay: 15,
                 // Array with usernames (copy and paste from training script)
-                users: ["Petter", "Kien"],
+                users: ["Petter"],
                 //Module set used for strangers and if no user is detected
                 defaultClass: "default",
                 //Set of modules which should be shown for every user
