@@ -32,6 +32,7 @@ var config = {
                 rotationTime: 1000 * 60 * 0.2,
                 modules:
                     [["calendar", "MagicMirror-QuoteCatalog", "MMM-Twitter"],
+                        ["MMM-Sundtcommander"],
                         ["MMM-iFrame"],
                         ["MMM-OsloCityBike", "MMM-Ruter", "MMM-YrThen"]],
                 excludes: ["MMM-BackgroundSlideshow", "MMM-MotionSensor", "MMM-Facial-Recognition", "alert", "clock", "MMM-YrNow", "MMM-SimpleLogo"],
@@ -40,7 +41,6 @@ var config = {
         },
         {
             module: "MMM-MotionSensor",
-            position: "fullscreen_above",
             classes: 'default everyone'
         },
         {
@@ -87,6 +87,11 @@ var config = {
                     }
                 ]
             },
+            classes: 'default everyone'
+        },
+        {
+            module: "MMM-Sundtcommander",
+            position: "lower_third",
             classes: 'default everyone'
         },
         {
@@ -150,11 +155,10 @@ var config = {
             module: "MMM-iFrame",
             position: "lower_third",	// This can be any of the regions.
             config: {
-                // See "Configuration options" for more information.
-                url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=2&theme=dark", "http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=6&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
-                updateInterval: 0.5 * 60 * 1000, // rotate URLs every 30 seconds
+                url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=2&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
+                updateInterval: 60 * 1000, // Rotate urls every 30 sec
                 width: "80%", // Optional. Default: 100%
-                height: "600px", //Optional. Default: 100px
+                height: "1200px", //Optional. Default: 100px
                 uniqueID: 0,
             },
             classes: 'default everyone'
@@ -178,14 +182,13 @@ var config = {
             config: {
                 // See "Configuration options" for more information.
                 url: ["http://35.158.126.129:3000/d-solo/wUjXxdhmk/office-monitor?orgId=1&panelId=4&&theme=dark"],  // as many URLs you want or you can just ["ENTER IN URL"] if single URL.
-                updateInterval: 0.5 * 60 * 1000, // rotate URLs every 30 seconds
+                updateInterval: 100 * 60 * 1000, // rotate URLs every 30 seconds
                 width: "80%", // Optional. Default: 100%
                 height: "600px", //Optional. Default: 100px
                 uniqueID: 2,
             },
             classes: 'default everyone'
         },
-
         {
             module: "MMM-Ruter",
             header: "Heimdalsgata Trikk",
