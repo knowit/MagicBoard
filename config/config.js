@@ -35,9 +35,13 @@ var config = {
                         ["MMM-Sundtcommander"],
                         ["MMM-iFrame"],
                         ["MMM-OsloCityBike", "MMM-Ruter", "MMM-YrThen"]],
-                excludes: ["MMM-BackgroundSlideshow", "MMM-MotionSensor", "MMM-Facial-Recognition", "alert", "clock", "MMM-YrNow", "MMM-SimpleLogo"],
+                excludes: ["MMM-BackgroundSlideshow", "MMM-MotionSensor", "MMM-Facial-Recognition", "alert", "clock", "MMM-YrNow", "MMM-SimpleLogo", "MMM-Hello-Mirror"],
             },
             classes: 'default everyone'
+        },
+        {
+            module: "MMM-Hello-Mirror",
+            classes: "default everyone",
         },
         {
             module: "MMM-MotionSensor",
