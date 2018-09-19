@@ -61,15 +61,8 @@ Module.register("MMM-Hello-Mirror", {
 
       // Define the commands ...
       // ... for german language
-      if (self.config.language == "no") {
-        var commands = {
-         "Hello": function(command) {
-            Log.info(
-              "Lyd assistenten gjenkjente kommandoen " +
-                self.name +
-                ": " +
-                command
-            );
+      const commands = {
+         "Hello": (command) => {
             if (self.config.broadcastEvents) {
               self.sendNotification("VOICE_COMMAND", command);
             }
@@ -78,22 +71,6 @@ Module.register("MMM-Hello-Mirror", {
             }
           }
         };
-      } else {
-        // ... for other languages (should be english)
-        var commands = {
-          "Hi (magic) mirror *command": function(command) {
-            Log.info(
-              "Voice command recognized in module " + self.name + ": " + command
-            );
-            if (self.config.broadcastEvents) {
-              self.sendNotification("VOICE_COMMAND", command);
-            }
-            if (responsiveVoice) {
-              responsiveVoice.speak(self.translate("VOICE_ACCEPTED"));
-            }
-          }
-        };
-      }
 
       // Add the commands to annyang
       annyang.addCommands(commands);
