@@ -3,7 +3,7 @@
 Module.register("MMM-Sundtcommander", {
     defaults: {
         height: "1200px",
-        width: "1200px",
+        width: "1800px",
         url: "http://sundtcommander.knowit.no/",
         scrolling: "no",
     },

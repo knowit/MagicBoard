@@ -10,8 +10,8 @@
 Module.register("MMM-iFrame", {
     // Default module config.
     defaults: {
-        height: "600px",
-        width: "80%",
+        height: "300px",
+        width: "1800px",
         updateInterval: 60 * 1000,
         url: ["http://magicmirror.builders/"],
         scrolling: "no",
