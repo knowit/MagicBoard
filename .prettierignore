@@ -1,0 +1,14 @@
+.vscode/*
+node_modules/
+
+# Ignore gatsby's cache and build folders
+public/*
+.cache/*
+# Ignore the static folder because of lots of compiled tradingview code
+static/*
+
+# We don't maintain flow-typed typings
+flow-typed/*
+
+src/locale/en/messages.json
+src/locale/no/messages.json
