@@ -1,4 +1,11 @@
 {
   "VOICE_ACCEPTED": "Dette fungerte! Wohoooo",
-  "HEAR_YOU": "What can I do for you?"
+  "HEAR_YOU": "What can I do for you?",
+  "BAKRUNN_BYTT": "Bytter bakgrunnsbilde",
+  "SIDE_NESTE": "Viser neste side",
+  "SIDE_FORRIGE": "Viser forrige side",
+  "SIDE_FØRSTE": "Viser første side",
+  "SIDE_BYGGINFO": "Viser bygginfo",
+  "SIDE_KALENDER": "Viser side med kalender",
+  "SIDE_VÆRMELDING": "Viser værmelding"
 }
