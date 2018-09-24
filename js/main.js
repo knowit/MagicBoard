@@ -21,42 +21,42 @@ var MM = (function() {
     var domCreationPromises = [];
 
     modules.forEach(function(module) {
-      if (typeof module.data.position !== 'string') {
+      if (typeof module.data.position !== "string") {
         return;
       }
 
       var wrapper = selectWrapper(module.data.position);
 
-      var dom = document.createElement('div');
+      var dom = document.createElement("div");
       dom.id = module.identifier;
       dom.className = module.name;
 
-      if (typeof module.data.classes === 'string') {
-        dom.className = 'module ' + dom.className + ' ' + module.data.classes;
+      if (typeof module.data.classes === "string") {
+        dom.className = "module " + dom.className + " " + module.data.classes;
       }
 
       dom.opacity = 0;
       wrapper.appendChild(dom);
 
       if (
-        typeof module.data.header !== 'undefined' &&
-        module.data.header !== ''
+        typeof module.data.header !== "undefined" &&
+        module.data.header !== ""
       ) {
-        var moduleHeader = document.createElement('header');
+        var moduleHeader = document.createElement("header");
         moduleHeader.innerHTML = module.data.header;
-        moduleHeader.className = 'module-header';
+        moduleHeader.className = "module-header";
         dom.appendChild(moduleHeader);
       }
 
-      var moduleContent = document.createElement('div');
-      moduleContent.className = 'module-content';
+      var moduleContent = document.createElement("div");
+      moduleContent.className = "module-content";
       dom.appendChild(moduleContent);
 
       var domCreationPromise = updateDom(module, 0);
       domCreationPromises.push(domCreationPromise);
       domCreationPromise
         .then(function() {
-          sendNotification('MODULE_DOM_CREATED', null, null, module);
+          sendNotification("MODULE_DOM_CREATED", null, null, module);
         })
         .catch(Log.error);
     });
@@ -64,7 +64,7 @@ var MM = (function() {
     updateWrapperStates();
 
     Promise.all(domCreationPromises).then(function() {
-      sendNotification('DOM_OBJECTS_CREATED');
+      sendNotification("DOM_OBJECTS_CREATED");
     });
   };
 
@@ -74,10 +74,10 @@ var MM = (function() {
 	 * argument position string - The name of the position.
 	 */
   var selectWrapper = function(position) {
-    var classes = position.replace('_', ' ');
+    var classes = position.replace("_", " ");
     var parentWrapper = document.getElementsByClassName(classes);
     if (parentWrapper.length > 0) {
-      var wrapper = parentWrapper[0].getElementsByClassName('container');
+      var wrapper = parentWrapper[0].getElementsByClassName("container");
       if (wrapper.length > 0) {
         return wrapper[0];
       }
@@ -184,8 +184,8 @@ var MM = (function() {
 	 */
   var moduleNeedsUpdate = function(module, newHeader, newContent) {
     var moduleWrapper = document.getElementById(module.identifier);
-    var contentWrapper = moduleWrapper.getElementsByClassName('module-content');
-    var headerWrapper = moduleWrapper.getElementsByClassName('module-header');
+    var contentWrapper = moduleWrapper.getElementsByClassName("module-content");
+    var headerWrapper = moduleWrapper.getElementsByClassName("module-header");
 
     var headerNeedsUpdate = false;
     var contentNeedsUpdate = false;
@@ -194,7 +194,7 @@ var MM = (function() {
       headerNeedsUpdate = newHeader !== headerWrapper[0].innerHTML;
     }
 
-    var tempContentWrapper = document.createElement('div');
+    var tempContentWrapper = document.createElement("div");
     tempContentWrapper.appendChild(newContent);
     contentNeedsUpdate =
       tempContentWrapper.innerHTML !== contentWrapper[0].innerHTML;
@@ -211,10 +211,10 @@ var MM = (function() {
 	 */
   var updateModuleContent = function(module, newHeader, newContent) {
     var moduleWrapper = document.getElementById(module.identifier);
-    var headerWrapper = moduleWrapper.getElementsByClassName('module-header');
-    var contentWrapper = moduleWrapper.getElementsByClassName('module-content');
+    var headerWrapper = moduleWrapper.getElementsByClassName("module-header");
+    var contentWrapper = moduleWrapper.getElementsByClassName("module-content");
 
-    contentWrapper[0].innerHTML = '';
+    contentWrapper[0].innerHTML = "";
     contentWrapper[0].appendChild(newContent);
 
     if (headerWrapper.length > 0 && newHeader) {
@@ -242,7 +242,7 @@ var MM = (function() {
 
     var moduleWrapper = document.getElementById(module.identifier);
     if (moduleWrapper !== null) {
-      moduleWrapper.style.transition = 'opacity ' + speed / 1000 + 's';
+      moduleWrapper.style.transition = "opacity " + speed / 1000 + "s";
       moduleWrapper.style.opacity = 0;
 
       clearTimeout(module.showHideTimer);
@@ -251,17 +251,17 @@ var MM = (function() {
         // since it's fade out anyway, we can see it lay above or
         // below other modules. This works way better than adjusting
         // the .display property.
-        moduleWrapper.style.position = 'fixed';
+        moduleWrapper.style.position = "fixed";
 
         updateWrapperStates();
 
-        if (typeof callback === 'function') {
+        if (typeof callback === "function") {
           callback();
         }
       }, speed);
     } else {
       // invoke callback even if no content, issue 1308
-      if (typeof callback === 'function') {
+      if (typeof callback === "function") {
         callback();
       }
     }
@@ -289,10 +289,10 @@ var MM = (function() {
     // Otherwise cancel show action.
     if (module.lockStrings.length !== 0 && options.force !== true) {
       Log.log(
-        'Will not show ' +
+        "Will not show " +
           module.name +
-          '. LockStrings active: ' +
-          module.lockStrings.join(','),
+          ". LockStrings active: " +
+          module.lockStrings.join(","),
       );
       return;
     }
@@ -301,15 +301,15 @@ var MM = (function() {
 
     // If forced show, clean current lockstrings.
     if (module.lockStrings.length !== 0 && options.force === true) {
-      Log.log('Force show of module: ' + module.name);
+      Log.log("Force show of module: " + module.name);
       module.lockStrings = [];
     }
 
     var moduleWrapper = document.getElementById(module.identifier);
     if (moduleWrapper !== null) {
-      moduleWrapper.style.transition = 'opacity ' + speed / 1000 + 's';
+      moduleWrapper.style.transition = "opacity " + speed / 1000 + "s";
       // Restore the postition. See hideModule() for more info.
-      moduleWrapper.style.position = 'static';
+      moduleWrapper.style.position = "static";
 
       updateWrapperStates();
 
@@ -319,7 +319,7 @@ var MM = (function() {
 
       clearTimeout(module.showHideTimer);
       module.showHideTimer = setTimeout(function() {
-        if (typeof callback === 'function') {
+        if (typeof callback === "function") {
           callback();
         }
       }, speed);
@@ -340,36 +340,36 @@ var MM = (function() {
 
   var updateWrapperStates = function() {
     var positions = [
-      'top_bar',
-      'top_left',
-      'top_center',
-      'top_right',
-      'upper_third',
-      'middle_center',
-      'lower_third',
-      'bottom_left',
-      'bottom_center',
-      'bottom_right',
-      'bottom_bar',
-      'fullscreen_above',
-      'fullscreen_below',
+      "top_bar",
+      "top_left",
+      "top_center",
+      "top_right",
+      "upper_third",
+      "middle_center",
+      "lower_third",
+      "bottom_left",
+      "bottom_center",
+      "bottom_right",
+      "bottom_bar",
+      "fullscreen_above",
+      "fullscreen_below",
     ];
 
     positions.forEach(function(position) {
       var wrapper = selectWrapper(position);
-      var moduleWrappers = wrapper.getElementsByClassName('module');
+      var moduleWrappers = wrapper.getElementsByClassName("module");
 
       var showWrapper = false;
       Array.prototype.forEach.call(moduleWrappers, function(moduleWrapper) {
         if (
-          moduleWrapper.style.position == '' ||
-          moduleWrapper.style.position == 'static'
+          moduleWrapper.style.position == "" ||
+          moduleWrapper.style.position == "static"
         ) {
           showWrapper = true;
         }
       });
 
-      wrapper.style.display = showWrapper ? 'block' : 'none';
+      wrapper.style.display = showWrapper ? "block" : "none";
     });
   };
 
@@ -377,9 +377,9 @@ var MM = (function() {
 	 * Loads the core config and combines it with de system defaults.
 	 */
   var loadConfig = function() {
-    if (typeof config === 'undefined') {
+    if (typeof config === "undefined") {
       config = defaults;
-      Log.error('Config file is missing! Please create a config file.');
+      Log.error("Config file is missing! Please create a config file.");
       return;
     }
 
@@ -424,12 +424,12 @@ var MM = (function() {
 		 */
     var modulesByClass = function(className, include) {
       var searchClasses = className;
-      if (typeof className === 'string') {
-        searchClasses = className.split(' ');
+      if (typeof className === "string") {
+        searchClasses = className.split(" ");
       }
 
       var newModules = modules.filter(function(module) {
-        var classes = module.data.classes.toLowerCase().split(' ');
+        var classes = module.data.classes.toLowerCase().split(" ");
 
         for (var c in searchClasses) {
           var searchClass = searchClasses[c];
@@ -472,26 +472,26 @@ var MM = (function() {
       });
     };
 
-    if (typeof modules.withClass === 'undefined') {
-      Object.defineProperty(modules, 'withClass', {
+    if (typeof modules.withClass === "undefined") {
+      Object.defineProperty(modules, "withClass", {
         value: withClass,
         enumerable: false,
       });
     }
-    if (typeof modules.exceptWithClass === 'undefined') {
-      Object.defineProperty(modules, 'exceptWithClass', {
+    if (typeof modules.exceptWithClass === "undefined") {
+      Object.defineProperty(modules, "exceptWithClass", {
         value: exceptWithClass,
         enumerable: false,
       });
     }
-    if (typeof modules.exceptModule === 'undefined') {
-      Object.defineProperty(modules, 'exceptModule', {
+    if (typeof modules.exceptModule === "undefined") {
+      Object.defineProperty(modules, "exceptModule", {
         value: exceptModule,
         enumerable: false,
       });
     }
-    if (typeof modules.enumerate === 'undefined') {
-      Object.defineProperty(modules, 'enumerate', {
+    if (typeof modules.enumerate === "undefined") {
+      Object.defineProperty(modules, "enumerate", {
         value: enumerate,
         enumerable: false,
       });
@@ -505,7 +505,7 @@ var MM = (function() {
 		 * Main init method.
 		 */
     init: function() {
-      Log.info('Initializing MagicMirror.');
+      Log.info("Initializing MagicMirror.");
       loadConfig();
       Translator.loadCoreTranslations(config.language);
       Loader.loadModules();
@@ -523,8 +523,8 @@ var MM = (function() {
         modules[module.data.index] = module;
       }
 
-      Log.info('All modules started!');
-      sendNotification('ALL_MODULES_STARTED');
+      Log.info("All modules started!");
+      sendNotification("ALL_MODULES_STARTED");
 
       createDomObjects();
     },
@@ -538,17 +538,17 @@ var MM = (function() {
 		 */
     sendNotification: function(notification, payload, sender) {
       if (arguments.length < 3) {
-        Log.error('sendNotification: Missing arguments.');
+        Log.error("sendNotification: Missing arguments.");
         return;
       }
 
-      if (typeof notification !== 'string') {
-        Log.error('sendNotification: Notification should be a string.');
+      if (typeof notification !== "string") {
+        Log.error("sendNotification: Notification should be a string.");
         return;
       }
 
       if (!(sender instanceof Module)) {
-        Log.error('sendNotification: Sender should be a module.');
+        Log.error("sendNotification: Sender should be a module.");
         return;
       }
 
@@ -564,7 +564,7 @@ var MM = (function() {
 		 */
     updateDom: function(module, speed) {
       if (!(module instanceof Module)) {
-        Log.error('updateDom: Sender should be a module.');
+        Log.error("updateDom: Sender should be a module.");
         return;
       }
 
@@ -611,12 +611,12 @@ var MM = (function() {
 })();
 
 // Add polyfill for Object.assign.
-if (typeof Object.assign != 'function') {
+if (typeof Object.assign != "function") {
   (function() {
     Object.assign = function(target) {
-      'use strict';
+      "use strict";
       if (target === undefined || target === null) {
-        throw new TypeError('Cannot convert undefined or null to object');
+        throw new TypeError("Cannot convert undefined or null to object");
       }
       var output = Object(target);
       for (var index = 1; index < arguments.length; index++) {

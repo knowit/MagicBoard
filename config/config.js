@@ -25,39 +25,37 @@ var config = {
   timeFormat: 24,
   units: 'metric',
 
-  modules: [
-    {
-      module: 'alert',
-      classes: 'default everyone',
-    },
-    {
-      module: 'clock',
-      position: 'top_left',
-      classes: 'default everyone',
-    },
-    {
-      module: 'calendar',
-      header: 'Fag & Events',
-      position: 'top_left',
-      config: {
-        wrapEvents: true,
-        fade: false,
-        calendars: [
-          {
-            //  Kalender for Fag
-            symbol: 'book',
-            url: '',
-          },
-          {
-            //  Kalender for Events
-            symbol: 'smile-o',
-            url: '',
-          },
-        ],
+  modules: {
+    topBar: { module: 'clock', position: 'top_left' },
+    misc: [{ module: 'alert' }],
+
+    upperLeft: [],
+    upperRight: [],
+    lowerLeft: [
+      {
+        module: 'calendar',
+        header: 'Fag & Events',
+        position: 'top_left',
+        config: {
+          wrapEvents: true,
+          fade: false,
+          calendars: [
+            {
+              //  Kalender for Fag
+              symbol: 'book',
+              url: '',
+            },
+            {
+              //  Kalender for Events
+              symbol: 'smile-o',
+              url: '',
+            },
+          ],
+        },
       },
-      classes: 'default everyone',
-    },
-  ],
+    ],
+    lowerRight: [],
+  },
 };
 
 /*************** DO NOT EDIT THE LINE BELOW ***************/

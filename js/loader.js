@@ -62,7 +62,45 @@ var Loader = (function() {
 	 * return array - module data as configured in config
 	 */
   var getAllModules = function() {
-    return config.modules;
+    let modules = [];
+    modules.push(config.modules.topBar);
+
+    for (let m in config.modules.misc) {
+      let module = config.modules.misc[m];
+      if (modules.indexOf(module.module) === -1 && !module.disabled) {
+        modules.push(module);
+      }
+    }
+
+    for (let m in config.modules.upperLeft) {
+      let module = config.module.upperLeft[m];
+      if (modules.indexOf(module.module) === -1 && !module.disabled) {
+        modules.push(module);
+      }
+    }
+
+    for (let m in config.modules.upperRight) {
+      let module = config.modules.upperRight[m];
+      if (modules.indexOf(module.module) === -1 && !module.disabled) {
+        modules.push(module);
+      }
+    }
+
+    for (let m in config.modules.lowerLeft) {
+      let module = config.modules.lowerLeft[m];
+      if (modules.indexOf(module.module) === -1 && !module.disabled) {
+        modules.push(module);
+      }
+    }
+
+    for (let m in config.modules.lowerRight) {
+      let module = config.modules.lowerRight[m];
+      if (modules.indexOf(module.module) === -1 && !module.disabled) {
+        modules.push(module);
+      }
+    }
+
+    return modules;
   };
 
   /* getModuleData()
@@ -78,12 +116,12 @@ var Loader = (function() {
       var moduleData = modules[m];
       var module = moduleData.module;
 
-      var elements = module.split('/');
+      var elements = module.split("/");
       var moduleName = elements[elements.length - 1];
-      var moduleFolder = config.paths.modules + '/' + module;
+      var moduleFolder = config.paths.modules + "/" + module;
 
       if (defaultModules.indexOf(moduleName) !== -1) {
-        moduleFolder = config.paths.modules + '/default/' + module;
+        moduleFolder = config.paths.modules + "/default/" + module;
       }
 
       if (moduleData.disabled === true) {
@@ -92,16 +130,16 @@ var Loader = (function() {
 
       moduleFiles.push({
         index: m,
-        identifier: 'module_' + m + '_' + module,
+        identifier: "module_" + m + "_" + module,
         name: moduleName,
-        path: moduleFolder + '/',
-        file: moduleName + '.js',
+        path: moduleFolder + "/",
+        file: moduleName + ".js",
         position: moduleData.position,
         header: moduleData.header,
         config: moduleData.config,
         classes:
-          typeof moduleData.classes !== 'undefined'
-            ? moduleData.classes + ' ' + module
+          typeof moduleData.classes !== "undefined"
+            ? moduleData.classes + " " + module
             : module,
       });
     }
@@ -116,7 +154,7 @@ var Loader = (function() {
 	 * argument module object - Information about the module we want to load.
 	 */
   var loadModule = function(module, callback) {
-    var url = module.path + '/' + module.file;
+    var url = module.path + "/" + module.file;
 
     var afterLoad = function() {
       var moduleObject = Module.create(module.name);
@@ -147,16 +185,16 @@ var Loader = (function() {
 	 * argument callback function - Function called when done.
 	 */
   var bootstrapModule = function(module, mObj, callback) {
-    Log.info('Bootstrapping module: ' + module.name);
+    Log.info("Bootstrapping module: " + module.name);
 
     mObj.setData(module);
 
     mObj.loadScripts(function() {
-      Log.log('Scripts loaded for: ' + module.name);
+      Log.log("Scripts loaded for: " + module.name);
       mObj.loadStyles(function() {
-        Log.log('Styles loaded for: ' + module.name);
+        Log.log("Styles loaded for: " + module.name);
         mObj.loadTranslations(function() {
-          Log.log('Translations loaded for: ' + module.name);
+          Log.log("Translations loaded for: " + module.name);
           moduleObjects.push(mObj);
           callback();
         });
@@ -172,48 +210,48 @@ var Loader = (function() {
 	 */
   var loadFile = function(fileName, callback) {
     var extension = fileName.slice(
-      (Math.max(0, fileName.lastIndexOf('.')) || Infinity) + 1,
+      (Math.max(0, fileName.lastIndexOf(".")) || Infinity) + 1,
     );
 
     switch (extension.toLowerCase()) {
-      case 'js':
-        Log.log('Load script: ' + fileName);
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
+      case "js":
+        Log.log("Load script: " + fileName);
+        var script = document.createElement("script");
+        script.type = "text/javascript";
         script.src = fileName;
         script.onload = function() {
-          if (typeof callback === 'function') {
+          if (typeof callback === "function") {
             callback();
           }
         };
         script.onerror = function() {
-          console.error('Error on loading script:', fileName);
-          if (typeof callback === 'function') {
+          console.error("Error on loading script:", fileName);
+          if (typeof callback === "function") {
             callback();
           }
         };
 
-        document.getElementsByTagName('body')[0].appendChild(script);
+        document.getElementsByTagName("body")[0].appendChild(script);
         break;
-      case 'css':
-        Log.log('Load stylesheet: ' + fileName);
-        var stylesheet = document.createElement('link');
-        stylesheet.rel = 'stylesheet';
-        stylesheet.type = 'text/css';
+      case "css":
+        Log.log("Load stylesheet: " + fileName);
+        var stylesheet = document.createElement("link");
+        stylesheet.rel = "stylesheet";
+        stylesheet.type = "text/css";
         stylesheet.href = fileName;
         stylesheet.onload = function() {
-          if (typeof callback === 'function') {
+          if (typeof callback === "function") {
             callback();
           }
         };
         stylesheet.onerror = function() {
-          console.error('Error on loading stylesheet:', fileName);
-          if (typeof callback === 'function') {
+          console.error("Error on loading stylesheet:", fileName);
+          if (typeof callback === "function") {
             callback();
           }
         };
 
-        document.getElementsByTagName('head')[0].appendChild(stylesheet);
+        document.getElementsByTagName("head")[0].appendChild(stylesheet);
         break;
     }
   };
@@ -237,15 +275,15 @@ var Loader = (function() {
 		 */
     loadFile: function(fileName, module, callback) {
       if (loadedFiles.indexOf(fileName.toLowerCase()) !== -1) {
-        Log.log('File already loaded: ' + fileName);
+        Log.log("File already loaded: " + fileName);
         callback();
         return;
       }
 
       if (
-        fileName.indexOf('http://') === 0 ||
-        fileName.indexOf('https://') === 0 ||
-        fileName.indexOf('/') !== -1
+        fileName.indexOf("http://") === 0 ||
+        fileName.indexOf("https://") === 0 ||
+        fileName.indexOf("/") !== -1
       ) {
         // This is an absolute or relative path.
         // Load it and then return.
@@ -258,7 +296,7 @@ var Loader = (function() {
         // This file is available in the vendor folder.
         // Load it from this vendor folder.
         loadedFiles.push(fileName.toLowerCase());
-        loadFile(config.paths.vendor + '/' + vendor[fileName], callback);
+        loadFile(config.paths.vendor + "/" + vendor[fileName], callback);
         return;
       }
 
