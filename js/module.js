@@ -14,7 +14,7 @@ var Module = Class.extend({
    *********************************************************/
 
   // Set the minimum MagicMirror module version for this module.
-  requiresVersion: '2.0.0',
+  requiresVersion: "2.0.0",
 
   // Module config defaults.
   defaults: {},
@@ -42,7 +42,7 @@ var Module = Class.extend({
 	 * Is called when the module is started.
 	 */
   start: function() {
-    Log.info('Starting module: ' + this.name);
+    Log.info("Starting module: " + this.name);
   },
 
   /* getScripts()
@@ -82,7 +82,6 @@ var Module = Class.extend({
   getDom: function() {
     var self = this;
     return new Promise(function(resolve) {
-      var div = document.createElement('div');
       var template = self.getTemplate();
       var templateData = self.getTemplateData();
 
@@ -136,7 +135,7 @@ var Module = Class.extend({
       this.name +
       '</div><div class="small dimmed">' +
       this.identifier +
-      '</div>'
+      "</div>"
     );
   },
 
@@ -162,13 +161,13 @@ var Module = Class.extend({
     if (sender) {
       Log.log(
         this.name +
-          ' received a module notification: ' +
+          " received a module notification: " +
           notification +
-          ' from sender: ' +
+          " from sender: " +
           sender.name,
       );
     } else {
-      Log.log(this.name + ' received a system notification: ' + notification);
+      Log.log(this.name + " received a system notification: " + notification);
     }
   },
 
@@ -186,13 +185,13 @@ var Module = Class.extend({
     var self = this;
 
     this._nunjucksEnvironment = new nunjucks.Environment(
-      new nunjucks.WebLoader(this.file(''), { async: true }),
+      new nunjucks.WebLoader(this.file(""), { async: true }),
       {
         trimBlocks: true,
         lstripBlocks: true,
       },
     );
-    this._nunjucksEnvironment.addFilter('translate', function(str) {
+    this._nunjucksEnvironment.addFilter("translate", function(str) {
       return self.translate(str);
     });
 
@@ -208,9 +207,9 @@ var Module = Class.extend({
   socketNotificationReceived: function(notification, payload) {
     Log.log(
       this.name +
-        ' received a socket notification: ' +
+        " received a socket notification: " +
         notification +
-        ' - Payload: ' +
+        " - Payload: " +
         payload,
     );
   },
@@ -219,14 +218,14 @@ var Module = Class.extend({
 	 * This method is called when a module is hidden.
 	 */
   suspend: function() {
-    Log.log(this.name + ' is suspended.');
+    Log.log(this.name + " is suspended.");
   },
 
   /* resume()
 	 * This method is called when a module is shown.
 	 */
   resume: function() {
-    Log.log(this.name + ' is resumed.');
+    Log.log(this.name + " is resumed.");
   },
 
   /*********************************************
@@ -261,7 +260,7 @@ var Module = Class.extend({
 	 * It also registers the notification callback.
 	 */
   socket: function() {
-    if (typeof this._socket === 'undefined') {
+    if (typeof this._socket === "undefined") {
       this._socket = this._socket = new MMSocket(this.name);
     }
 
@@ -281,7 +280,7 @@ var Module = Class.extend({
 	 * return string - File path.
 	 */
   file: function(file) {
-    return (this.data.path + '/' + file).replace('//', '/');
+    return (this.data.path + "/" + file).replace("//", "/");
   },
 
   /* loadStyles()
@@ -290,7 +289,7 @@ var Module = Class.extend({
 	 * argument callback function - Function called when done.
 	 */
   loadStyles: function(callback) {
-    this.loadDependencies('getStyles', callback);
+    this.loadDependencies("getStyles", callback);
   },
 
   /* loadScripts()
@@ -299,7 +298,7 @@ var Module = Class.extend({
 	 * argument callback function - Function called when done.
 	 */
   loadScripts: function(callback) {
-    this.loadDependencies('getScripts', callback);
+    this.loadDependencies("getScripts", callback);
   },
 
   /* loadDependencies(funcName, callback)
@@ -372,14 +371,14 @@ var Module = Class.extend({
      * argument defaultValue string - The default value with variables. (Optional)
 	 */
   translate: function(key, defaultValueOrVariables, defaultValue) {
-    if (typeof defaultValueOrVariables === 'object') {
+    if (typeof defaultValueOrVariables === "object") {
       return (
         Translator.translate(this, key, defaultValueOrVariables) ||
         defaultValue ||
-        ''
+        ""
       );
     }
-    return Translator.translate(this, key) || defaultValueOrVariables || '';
+    return Translator.translate(this, key) || defaultValueOrVariables || "";
   },
 
   /* updateDom(speed)
@@ -419,7 +418,7 @@ var Module = Class.extend({
 	 * argument options object - Optional settings for the hide method.
 	 */
   hide: function(speed, callback, options) {
-    if (typeof callback === 'object') {
+    if (typeof callback === "object") {
       options = callback;
       callback = function() {};
     }
@@ -447,7 +446,7 @@ var Module = Class.extend({
 	 * argument options object - Optional settings for the hide method.
 	 */
   show: function(speed, callback, options) {
-    if (typeof callback === 'object') {
+    if (typeof callback === "object") {
       options = callback;
       callback = function() {};
     }
@@ -486,8 +485,8 @@ Module.create = function(name) {
 function cmpVersions(a, b) {
   var i, diff;
   var regExStrip0 = /(\.0+)+$/;
-  var segmentsA = a.replace(regExStrip0, '').split('.');
-  var segmentsB = b.replace(regExStrip0, '').split('.');
+  var segmentsA = a.replace(regExStrip0, "").split(".");
+  var segmentsB = b.replace(regExStrip0, "").split(".");
   var l = Math.min(segmentsA.length, segmentsB.length);
 
   for (i = 0; i < l; i++) {
@@ -506,16 +505,16 @@ Module.register = function(name, moduleDefinition) {
         name +
         "' - Minimum version:  " +
         moduleDefinition.requiresVersion +
-        ' - Current version: ' +
+        " - Current version: " +
         version,
     );
     if (cmpVersions(version, moduleDefinition.requiresVersion) >= 0) {
-      Log.log('Version is ok!');
+      Log.log("Version is ok!");
     } else {
       Log.log("Version is incorrect. Skip module: '" + name + "'");
       return;
     }
   }
-  Log.log('Module registered: ' + name);
+  Log.log("Module registered: " + name);
   Module.definitions[name] = moduleDefinition;
 };

@@ -63,7 +63,9 @@ var Loader = (function() {
 	 */
   var getAllModules = function() {
     let modules = [];
-    modules.push(config.modules.topBar);
+    let topBar = config.modules.topBar;
+    topBar["position"] = "top-container";
+    modules.push(topBar);
 
     for (let m in config.modules.misc) {
       let module = config.modules.misc[m];
@@ -73,8 +75,10 @@ var Loader = (function() {
     }
 
     for (let m in config.modules.upperLeft) {
-      let module = config.module.upperLeft[m];
+      let module = config.modules.upperLeft[m];
       if (modules.indexOf(module.module) === -1 && !module.disabled) {
+        module["position"] = "upper-left";
+        module["amount"] = config.modules.upperLeft.length;
         modules.push(module);
       }
     }
@@ -82,6 +86,8 @@ var Loader = (function() {
     for (let m in config.modules.upperRight) {
       let module = config.modules.upperRight[m];
       if (modules.indexOf(module.module) === -1 && !module.disabled) {
+        module["position"] = "upper-right";
+        module["amount"] = config.modules.upperRight.length;
         modules.push(module);
       }
     }
@@ -89,6 +95,8 @@ var Loader = (function() {
     for (let m in config.modules.lowerLeft) {
       let module = config.modules.lowerLeft[m];
       if (modules.indexOf(module.module) === -1 && !module.disabled) {
+        module["position"] = "lower-left";
+        module["amount"] = config.modules.lowerLeft.length;
         modules.push(module);
       }
     }
@@ -96,6 +104,8 @@ var Loader = (function() {
     for (let m in config.modules.lowerRight) {
       let module = config.modules.lowerRight[m];
       if (modules.indexOf(module.module) === -1 && !module.disabled) {
+        module["position"] = "lower-right";
+        module["amount"] = config.modules.lowerRight.length;
         modules.push(module);
       }
     }
@@ -137,6 +147,7 @@ var Loader = (function() {
         position: moduleData.position,
         header: moduleData.header,
         config: moduleData.config,
+        amount: moduleData.amount,
         classes:
           typeof moduleData.classes !== "undefined"
             ? moduleData.classes + " " + module

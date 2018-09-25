@@ -24,15 +24,27 @@ var MM = (function() {
       if (typeof module.data.position !== "string") {
         return;
       }
-
       var wrapper = selectWrapper(module.data.position);
-
       var dom = document.createElement("div");
       dom.id = module.identifier;
       dom.className = module.name;
 
+      var amountInnerModules;
+      switch (module.data.amount) {
+        case 2:
+          amountInnerModules = "two";
+          break;
+        case 3:
+          amountInnerModules = "three";
+          break;
+        default:
+          //when there is only one module
+          amountInnerModules = "one";
+      }
+
       if (typeof module.data.classes === "string") {
-        dom.className = "module " + dom.className + " " + module.data.classes;
+        dom.className =
+          "module " + amountInnerModules + " " + module.data.classes;
       }
 
       dom.opacity = 0;
@@ -74,12 +86,18 @@ var MM = (function() {
 	 * argument position string - The name of the position.
 	 */
   var selectWrapper = function(position) {
-    var classes = position.replace("_", " ");
-    var parentWrapper = document.getElementsByClassName(classes);
-    if (parentWrapper.length > 0) {
-      var wrapper = parentWrapper[0].getElementsByClassName("container");
-      if (wrapper.length > 0) {
-        return wrapper[0];
+    var parentWrapper;
+    if (position === "top-container") {
+      parentWrapper = document.getElementsByClassName(position);
+      if (parentWrapper.length > 0) return parentWrapper[0];
+    } else {
+      parentWrapper = document.getElementsByClassName("bottom-container");
+      if (parentWrapper.length > 0) {
+        var wrapper = parentWrapper[0].getElementsByClassName(position);
+        if (wrapper.length > 0) {
+          return wrapper[0];
+        }
+        return parentWrapper[0];
       }
     }
   };
@@ -340,19 +358,11 @@ var MM = (function() {
 
   var updateWrapperStates = function() {
     var positions = [
-      "top_bar",
-      "top_left",
-      "top_center",
-      "top_right",
-      "upper_third",
-      "middle_center",
-      "lower_third",
-      "bottom_left",
-      "bottom_center",
-      "bottom_right",
-      "bottom_bar",
-      "fullscreen_above",
-      "fullscreen_below",
+      "top-container",
+      "uppper-left",
+      "upper-right",
+      "lower-left",
+      "lower-right",
     ];
 
     positions.forEach(function(position) {
@@ -369,7 +379,7 @@ var MM = (function() {
         }
       });
 
-      wrapper.style.display = showWrapper ? "block" : "none";
+      wrapper.style.display = showWrapper ? "flex" : "block";
     });
   };
 
@@ -520,6 +530,7 @@ var MM = (function() {
       modules = [];
       for (var m in moduleObjects) {
         var module = moduleObjects[m];
+        module.position = m;
         modules[module.data.index] = module;
       }
 

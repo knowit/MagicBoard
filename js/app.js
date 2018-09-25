@@ -232,9 +232,7 @@ var App = function() {
     loadConfig(function(c) {
       config = c;
 
-      var modules = helper.generateModules(config);
-
-      loadModules(modules, function() {
+      loadModules(config.modules, function() {
         var server = new Server(config, function(app, io) {
           console.log("Server started ...");
 
