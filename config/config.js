@@ -9,56 +9,69 @@
  */
 
 var config = {
-  address: 'localhost', // Address to listen on, can be:
+  address: "localhost", // Address to listen on, can be:
   // - "localhost", "127.0.0.1", "::1" to listen on loopback interface
   // - another specific IPv4/6 to listen on a specific interface
   // - "", "0.0.0.0", "::" to listen on any interface
   // Default, when address config is left out, is "localhost"
   port: 8080,
-  ipWhitelist: ['127.0.0.1', '::ffff:127.0.0.1', '::1'], // Set [] to allow all IP addresses
+  ipWhitelist: ["127.0.0.1", "::ffff:127.0.0.1", "::1"], // Set [] to allow all IP addresses
   // or add a specific IPv4 of 192.168.1.5 :
   // ["127.0.0.1", "::ffff:127.0.0.1", "::1", "::ffff:192.168.1.5"],
   // or IPv4 range of 192.168.3.0 --> 192.168.3.15 use CIDR format :
   // ["127.0.0.1", "::ffff:127.0.0.1", "::1", "::ffff:192.168.3.0/28"],
 
-  language: 'no',
+  language: "no",
   timeFormat: 24,
-  units: 'metric',
+  units: "metric",
 
   modules: {
-    topBar: { module: 'clock', position: 'top_left' },
-    misc: [{ module: 'alert' }],
+    topBar: { module: "clock" },
 
-    upperLeft: [],
-    upperRight: [],
+    misc: [{ module: "alert" }], //modules that require no positions
+
+    upperLeft: [
+      { module: "MMM-Placeholder" },
+      {
+        module: "MMM-OsloCityBike",
+        header: "Oslo Bysykkel",
+        config: {
+          lat: {
+            min: 59.917154,
+            max: 59.917154,
+          },
+          long: {
+            min: 10.762195,
+            max: 10.762195,
+          },
+        },
+      },
+    ],
+    upperRight: [{ module: "MMM-Placeholder" }],
     lowerLeft: [
       {
-        module: 'calendar',
-        header: 'Fag & Events',
-        position: 'top_left',
+        module: "MMM-Ruter",
+        header: "Heimdalsgata",
         config: {
-          wrapEvents: true,
-          fade: false,
-          calendars: [
+          showPlatform: true,
+          maxItems: 10,
+          showHeader: true,
+          fade: true,
+          stops: [
             {
-              //  Kalender for Fag
-              symbol: 'book',
-              url: '',
-            },
-            {
-              //  Kalender for Events
-              symbol: 'smile-o',
-              url: '',
+              stopId: "3010531",
+              platforms: ["2", "5", "6", "11"],
+              timeToThere: 5,
             },
           ],
         },
       },
     ],
-    lowerRight: [],
+    lowerRight: [{ module: "MMM-Placeholder" }, { module: "MMM-Placeholder" }],
   },
 };
 
 /*************** DO NOT EDIT THE LINE BELOW ***************/
-if (typeof module !== 'undefined') {
+if (typeof module !== "undefined") {
   module.exports = config;
 }
