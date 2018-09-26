@@ -1,0 +1,7 @@
+{
+  "javascript.validate.enable": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "prettier.useTabs": true,
+  "prettier.tabWidth": 4,
+}
