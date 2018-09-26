@@ -74,7 +74,7 @@ body {
 }
 
 .medium {
-	font-size: 30px;
+	font-size: 3vw;
 	line-height: 35px;
 }
 
@@ -90,7 +90,7 @@ body {
 }
 
 .xxlarge {
-	font-size: 85px;
+	font-size: 20vw;
 	line-height: 90px;
 	/*letter-spacing: -6px;*/
 }

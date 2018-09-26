@@ -5,7 +5,7 @@
  * By Michael Teeuw http://michaelteeuw.nl
  * MIT Licensed.
  */
-Module.register("clock",{
+Module.register("clock", {
 	// Module config defaults.
 	defaults: {
 		displayType: "digital", // options: digital, analog, both
@@ -47,27 +47,26 @@ Module.register("clock",{
 
 		// Set locale.
 		moment.locale(config.language);
-
 	},
 	// Override dom generator.
 	getDom: function() {
-
 		var wrapper = document.createElement("div");
+		wrapper.className = "clock";
 
 		/************************************
 		 * Create wrappers for DIGITAL clock
 		 */
 
-		var dateWrapper = document.createElement("div");
 		var timeWrapper = document.createElement("div");
 		var secondsWrapper = document.createElement("sup");
+		var dateWrapper = document.createElement("div");
 		var periodWrapper = document.createElement("span");
-		var weekWrapper = document.createElement("div")
+		var weekWrapper = document.createElement("div");
 		// Style Wrappers
+		timeWrapper.className = "time bright xxlarge regular";
+		secondsWrapper.className = "seconds dimmed";
 		dateWrapper.className = "date normal medium";
-		timeWrapper.className = "time bright xxlarge light";
-		secondsWrapper.className = "dimmed";
-		weekWrapper.className = "week dimmed medium"
+		weekWrapper.className = "week dimmed medium";
 
 		// Set content of wrappers.
 		// The moment().format("h") method has a bug on the Raspberry Pi.
@@ -85,16 +84,20 @@ Module.register("clock",{
 		}
 
 		if (this.config.clockBold === true) {
-			timeString = now.format(hourSymbol + "[<span class=\"bold\">]mm[</span>]");
+			timeString = now.format(
+				hourSymbol + '[<span class="bold">]mm[</span>]',
+			);
 		} else {
 			timeString = now.format(hourSymbol + ":mm");
 		}
 
-		if(this.config.showDate){
+		if (this.config.showDate) {
 			dateWrapper.innerHTML = now.format(this.config.dateFormat);
 		}
 		if (this.config.showWeek) {
-			weekWrapper.innerHTML = this.translate("WEEK", { weekNumber: now.week() });
+			weekWrapper.innerHTML = this.translate("WEEK", {
+				weekNumber: now.week(),
+			});
 		}
 		timeWrapper.innerHTML = timeString;
 		secondsWrapper.innerHTML = now.format("ss");
@@ -114,7 +117,7 @@ Module.register("clock",{
 		 * Create wrappers for ANALOG clock, only if specified in config
 		 */
 
-		 if (this.config.displayType !== "digital") {
+		if (this.config.displayType !== "digital") {
 			// If it isn't 'digital', then an 'analog' clock was also requested
 
 			// Calculate the degree offset for each hand of the clock
@@ -122,7 +125,7 @@ Module.register("clock",{
 			if (this.config.timezone) {
 				now.tz(this.config.timezone);
 			}
-			var	second = now.seconds() * 6,
+			var second = now.seconds() * 6,
 				minute = now.minute() * 6 + second / 60,
 				hour = ((now.hours() % 12) / 12) * 360 + 90 + minute / 12;
 
@@ -132,13 +135,21 @@ Module.register("clock",{
 			clockCircle.style.width = this.config.analogSize;
 			clockCircle.style.height = this.config.analogSize;
 
-			if (this.config.analogFace != "" && this.config.analogFace != "simple" && this.config.analogFace != "none") {
-				clockCircle.style.background = "url("+ this.data.path + "faces/" + this.config.analogFace + ".svg)";
+			if (
+				this.config.analogFace != "" &&
+				this.config.analogFace != "simple" &&
+				this.config.analogFace != "none"
+			) {
+				clockCircle.style.background =
+					"url(" +
+					this.data.path +
+					"faces/" +
+					this.config.analogFace +
+					".svg)";
 				clockCircle.style.backgroundSize = "100%";
 
 				// The following line solves issue: https://github.com/MichMich/MagicMirror/issues/611
 				clockCircle.style.border = "1px solid black";
-
 			} else if (this.config.analogFace != "none") {
 				clockCircle.style.border = "2px solid white";
 			}
@@ -175,8 +186,8 @@ Module.register("clock",{
 
 		if (this.config.displayType === "digital") {
 			// Display only a digital clock
-			wrapper.appendChild(dateWrapper);
 			wrapper.appendChild(timeWrapper);
+			wrapper.appendChild(dateWrapper);
 			wrapper.appendChild(weekWrapper);
 		} else if (this.config.displayType === "analog") {
 			// Display only an analog clock
@@ -214,8 +225,8 @@ Module.register("clock",{
 			digitalWrapper.appendChild(weekWrapper);
 
 			var appendClocks = function(condition, pos1, pos2) {
-				var padding = [0,0,0,0];
-				padding[(placement === condition) ? pos1 : pos2] = "20px";
+				var padding = [0, 0, 0, 0];
+				padding[placement === condition ? pos1 : pos2] = "20px";
 				analogWrapper.style.padding = padding.join(" ");
 				if (placement === condition) {
 					wrapper.appendChild(analogWrapper);
@@ -241,5 +252,5 @@ Module.register("clock",{
 
 		// Return the wrapper to the dom.
 		return wrapper;
-	}
+	},
 });

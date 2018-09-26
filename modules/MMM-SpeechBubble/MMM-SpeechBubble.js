@@ -12,7 +12,7 @@ Module.register("MMM-SpeechBubble", {
 	// Override dom generator.
 	getDom: function() {
 		var wrapper = document.createElement("div");
-		wrapper.className = "speech-bubble";
+		wrapper.className = "speech-bubble normal medium";
 		wrapper.innerHTML = this.config.text;
 
 		return wrapper;

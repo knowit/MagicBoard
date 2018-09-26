@@ -37,8 +37,10 @@ var MM = (function() {
 				case 3:
 					amountInnerModules = "three";
 					break;
+				case 4:
+					amountInnerModules = "four";
+					break;
 				default:
-					//when there is only one module
 					amountInnerModules = "one";
 			}
 
