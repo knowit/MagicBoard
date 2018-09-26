@@ -86,10 +86,6 @@ function createWindow() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on("ready", function() {
-  try {
-    console.log("module", module);
-    require("electron-reloader")(module);
-  } catch (err) {}
   console.log("Launching application.");
   createWindow();
 });
