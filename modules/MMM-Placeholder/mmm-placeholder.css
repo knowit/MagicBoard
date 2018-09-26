@@ -1,0 +1,11 @@
+.MMM-Placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.MMM-Placeholder .questionMark {
+  font-size: 2vw;
+  font-weight: 500;
+  color: white;
+}

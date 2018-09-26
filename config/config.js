@@ -30,23 +30,7 @@ var config = {
 
     misc: [{ module: "alert" }], //modules that require no positions
 
-    upperLeft: [
-      { module: "MMM-Placeholder" },
-      {
-        module: "MMM-OsloCityBike",
-        header: "Oslo Bysykkel",
-        config: {
-          lat: {
-            min: 59.917154,
-            max: 59.917154,
-          },
-          long: {
-            min: 10.762195,
-            max: 10.762195,
-          },
-        },
-      },
-    ],
+    upperLeft: [{ module: "MMM-Placeholder" }, { module: "MMM-Placeholder" }],
     upperRight: [{ module: "MMM-Placeholder" }],
     lowerLeft: [
       {
@@ -67,7 +51,24 @@ var config = {
         },
       },
     ],
-    lowerRight: [{ module: "MMM-Placeholder" }, { module: "MMM-Placeholder" }],
+    lowerRight: [
+      {
+        module: "MMM-OsloCityBike",
+        header: "Oslo Bysykkel",
+        config: {
+          lat: {
+            min: 59.917154,
+            max: 59.917154,
+          },
+          long: {
+            min: 10.762195,
+            max: 10.762195,
+          },
+        },
+      },
+      { module: "MMM-Placeholder" },
+      { module: "MMM-Placeholder" },
+    ],
   },
 };
 
