@@ -51,7 +51,7 @@ Module.register("clock", {
 	// Override dom generator.
 	getDom: function() {
 		var wrapper = document.createElement("div");
-		wrapper.className = "clock";
+		wrapper.className = "clock-container";
 
 		/************************************
 		 * Create wrappers for DIGITAL clock

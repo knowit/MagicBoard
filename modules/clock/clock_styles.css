@@ -3,23 +3,22 @@
 }
 
 .clock-container {
-	border: 2px solid blue;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: center;
 	flex-direction: column;
 }
 
-.clock .seconds {
-	margin-top: 150px;
+.clock .time {
+	margin-top: 80px;
 }
 
-.clock .week {
-	margin: 150px;
+.clock .seconds {
+	margin-top: 80px;
 }
 
 .clock .date {
-	margin: 150px;
+	margin: 100px;
 }
 
 .clockCircle {

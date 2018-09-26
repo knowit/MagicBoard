@@ -16,7 +16,8 @@ body {
 	display: flex;
 	flex-flow: row wrap;
 	position: absolute;
-	margin: 10px;
+	margin: 0;
+	padding: 10px;
 	height: calc(100% - 20px);
 	width: calc(100% - 20px);
 	color: #fff;
