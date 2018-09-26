@@ -1,0 +1,29 @@
+.ruter .title {
+  padding-left: 0;
+  padding-right: 0;
+  text-align: left;
+}
+
+.align-left {
+  text-align: left;
+}
+
+td.line,
+th.line {
+  width: 10%;
+}
+
+td.destination,
+th.destination {
+  width: 40%;
+}
+
+td.platform,
+th.platform {
+  width: 20%;
+}
+
+td.time,
+th.time {
+  width: 20%;
+}

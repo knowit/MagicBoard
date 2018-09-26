@@ -1,0 +1,12 @@
+{
+	"LOADING":				"Loading &hellip;",
+	"STARTINGMODULE":		"Starting module",
+	"NOW":					"Now",
+	"1MIN":					"One minute",
+	"MINUTES":				"minutes",
+	"LINEHEADER":			"Line",
+	"DESTINATIONHEADER":	"Destination",
+	"PLATFORMHEADER":		"Platform",
+	"STOPNAMEHEADER":		"From",
+	"TIMEHEADER":			"Time"
+}
