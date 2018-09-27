@@ -65,7 +65,7 @@ body {
 }
 
 .xsmall {
-	font-size: 15px;
+	font-size: 1vw;
 	line-height: 20px;
 }
 
@@ -402,4 +402,12 @@ td {
 
 .wrap {
 	flex-wrap: wrap;
+}
+
+.column {
+	flex-direction: column;
+}
+
+.test-border {
+	border: 2px solid red;
 }
