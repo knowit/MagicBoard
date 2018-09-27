@@ -134,10 +134,6 @@ var Loader = (function () {
             var moduleName = elements[elements.length - 1];
             var moduleFolder = config.paths.modules + "/" + module;
 
-            if (defaultModules.indexOf(moduleName) !== -1) {
-                moduleFolder = config.paths.modules + "/default/" + module;
-            }
-
             if (moduleData.disabled === true) {
                 continue;
             }

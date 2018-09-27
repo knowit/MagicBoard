@@ -8,9 +8,7 @@
 var fs = require("fs");
 var Server = require(__dirname + "/server.js");
 var Utils = require(__dirname + "/utils.js");
-var defaultModules = require(__dirname + "/../js/defaultmodules.js");
 var path = require("path");
-var helper = require("./helper.js");
 
 // Get version number.
 global.version = JSON.parse(fs.readFileSync("package.json", "utf8")).version;
@@ -136,12 +134,6 @@ var App = function () {
     var loadModule = function (module, callback) {
         var moduleFolder = __dirname + "/../modules/" + module.module;
         var moduleName = module.module;
-
-        //console.log(moduleName);
-
-        if (defaultModules.indexOf(moduleName) !== -1) {
-            moduleFolder = __dirname + "/../modules/" + moduleName;
-        }
 
         var helperPath = moduleFolder + "/node_helper.js";
 
