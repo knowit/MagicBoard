@@ -1,33 +1,12 @@
 .calendar .symbol {
-  padding-left: 0;
-  padding-right: 10px;
-  font-size: 30px;
-  line-height: 35px;
-  vertical-align: top;
-  color: white;
-}
-
-.calendar .symbol span {
-  display: inline-block;
-  -ms-transform: translate(0, 2px); /* IE 9 */
-  -webkit-transform: translate(0, 2px); /* Safari */
-  transform: translate(0, 2px);
-  color: white;
+	width: 10%;
 }
 
 .calendar .title {
-  padding-left: 0;
-  padding-right: 0;
-  font-size: 30px;
-  line-height: 35px;
-  color: white;
+	width: 60%;
 }
 
 .calendar .time {
-  padding-left: 40px;
-  text-align: right;
-  vertical-align: top;
-  font-size: 30px;
-  line-height: 35px;
-  color: white;
+	width: 30%;
+	text-align: right;
 }

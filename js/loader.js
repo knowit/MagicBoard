@@ -125,7 +125,6 @@ var Loader = (function() {
 	var getModuleData = function() {
 		var modules = getAllModules();
 		var moduleFiles = [];
-		console.log("M*ASD *ASD*,", modules);
 
 		for (var m in modules) {
 			var moduleData = modules[m];
