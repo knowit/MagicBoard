@@ -31,7 +31,13 @@ var config = {
 		misc: [{ module: "alert" }], //modules that require no positions
 
 		upperLeft: [
-			{ module: "MMM-Placeholder" },
+			{
+				module: "MMM-YrNow",
+				config: {
+					locationId: "1-2255826",
+					showWeatherForecast: true,
+				},
+			},
 			{ module: "MMM-Placeholder" },
 		],
 		upperRight: [{ module: "MMM-Placeholder" }],
