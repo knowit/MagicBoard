@@ -2,11 +2,11 @@
 Module.register("MMM-Jira", {
     // Load required additional scripts
     defaults: {
-        width: 600,
-        height: 300,
+        width: 1200,
+        height: 400,
         chartLineColor: "rgb(45, 41, 38)",
         chartAreaColor: "rgba(201, 226, 224, 1)",
-        updateInterval: 1000 * 10,
+        updateInterval: 1000 * 60,
         dataUpdateInterval: 1000 * 60 * 60,
         viewRotation: ["month", "week", "status"],
     },
@@ -113,7 +113,7 @@ Module.register("MMM-Jira", {
                     }]
                 },
                 options: {
-                    responsive: true,
+                    responsive: false,
                     title: {
                         display: true,
                         text: chartData.title,
@@ -174,14 +174,12 @@ Module.register("MMM-Jira", {
             });
         }
     },
-
     // Override dom generator.
     getDom: async function () {
         const wrapper = document.createElement('canvas');
         wrapper.id = "chart";
         wrapper.width = this.config.width;
         wrapper.height = this.config.height;
-
         const ctx = wrapper.getContext("2d");
         const data = await this.fetchJiraData();
         this.generateChart(ctx, data);

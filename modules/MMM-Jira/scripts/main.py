@@ -19,11 +19,12 @@ class YearData:
         issue_datetime = dateutil.parser.parse(issue.fields.created)
 
         self.issues_in_year.append(issue)
-        self.issues_in_months[issue_datetime.month].append(issue)
-        self.issues_in_weeks[issue_datetime.date().isocalendar()[1]].append(issue)
+        self.issues_in_months[issue_datetime.month - 1].append(issue)
+        self.issues_in_weeks[issue_datetime.date().isocalendar()[1] - 1].append(issue)
 
     def issue_statuses(self):
         status_list = dict()
+
         for issue in self.issues_in_year:
             status_name = issue.fields.status.name
             if status_name in status_list:
