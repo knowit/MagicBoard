@@ -80,8 +80,58 @@ var MM = (function() {
 
 		Promise.all(domCreationPromises).then(function() {
 			sendNotification("DOM_OBJECTS_CREATED");
+			boardsController();
 		});
 	};
+
+	//  Function: Updates board every set interval (updateInterval) with fade out and fade in speed (fadeSpeed)
+	var boardsController = function () {
+	    let boardNumber = 0;
+	    let numberOfBoards = 1;
+
+	    //  Gets number of boards
+	    for(let m in modules){
+            if (typeof modules[m].data.board !== "undefined") {
+                if(modules[m].data.board + 1 > numberOfBoards){
+                    numberOfBoards = modules[m].data.board + 1;
+                }
+            }
+        }
+
+        boardNumber = rotateBoards(boardNumber, numberOfBoards);
+        setInterval(function () {
+            boardNumber = rotateBoards(boardNumber, numberOfBoards);
+        }, config.boardsUpdateInterval);
+    };
+
+	//  Function: Rotates board by hiding all modules, then showing the modules on the current board
+	var rotateBoards = function (boardNumber, numberOfBoards) {
+        const self = this;
+        const callback = function(){};
+        const options = {lockString: self.identifier};
+
+        //  Hides all modules
+        for (let m in modules){
+            if (typeof modules[m].data.board !== "undefined") {
+                modules[m].hide(config.boardsFadeSpeed, callback, options);
+            }
+        }
+
+        //  Waits until all modules are hidden before showing current board
+        setTimeout(function(){
+            for (let m in modules){
+                if (typeof modules[m].data.board !== "undefined" && modules[m].data.board === boardNumber) {
+                    modules[m].show(config.boardsFadeSpeed, callback, options);
+                }
+            }
+        }, config.boardsFadeSpeed);
+
+        boardNumber++;
+        if(boardNumber >= numberOfBoards){
+            boardNumber = 0;
+        }
+        return boardNumber
+    };
 
 	/* selectWrapper(position)
        * Select the wrapper dom object for a specific position.
