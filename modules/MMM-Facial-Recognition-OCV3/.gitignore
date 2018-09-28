@@ -1,0 +1,5 @@
+*.pyc
+training.xml
+training_data/*
+*~
+node_modules/**/*

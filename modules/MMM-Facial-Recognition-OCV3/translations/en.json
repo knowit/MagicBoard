@@ -1,0 +1,6 @@
+{
+  "knownPerson": "Hello %person, welcome back!",
+  "title": "Facial-Recognition",
+  "unknownPerson": "Hello stranger, nice to meet you!",
+  "logout": "User logged out."
+}
