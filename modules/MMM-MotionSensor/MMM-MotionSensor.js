@@ -47,12 +47,7 @@ Module.register("MMM-MotionSensor", {
 		var wrapper = document.getElementById("fullscreen-container");
 
 		if (this.enableBlackScreen) {
-			var childNode = wrapper.firstChild;
-			childNode.style.display = "none";
-
-			wrapper.style.display = "block";
-			wrapper.style.backgroundColor = "black";
-			wrapper.style.zIndex = 5000;
+			wrapper.style.display = "flex";
 		} else {
 			wrapper.style.display = "none";
 		}
