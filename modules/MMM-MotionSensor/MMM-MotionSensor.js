@@ -47,9 +47,9 @@ Module.register("MMM-MotionSensor", {
 		var wrapper = document.getElementById("fullscreen-container");
 
 		if (this.enableBlackScreen) {
-			wrapper.style.display = "flex";
-		} else {
 			wrapper.style.display = "none";
+		} else {
+			wrapper.style.display = "flex";
 		}
 	},
 });
