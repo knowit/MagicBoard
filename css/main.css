@@ -28,8 +28,8 @@ body {
 	-webkit-font-smoothing: antialiased;
 
 	/* color for backgroun animation */
-	background: linear-gradient(-45deg, #332555, #f7bd1f, #332555, #f7bd1f);
-	animation: change-background 10s ease infinite alternate;
+	background: linear-gradient(-45deg, #f7bd1f, #332555, #f7bd1f, #332555);
+	animation: change-background 40s ease infinite alternate;
 	background-size: 400% 400%;
 }
 
