@@ -25,27 +25,30 @@ var config = {
     timeFormat: 24,
     units: "metric",
 
-    boardsUpdateInterval: 1000 * 60,
-    boardsFadeSpeed: 1000 * 2,
-
     modules: {
-        topBar: { module: "clock" }, // Kun en module
-        misc: [{ module: "alert" }], // modules that require no positions
+        topBar: {module: "clock"}, // Kun en module
+        misc: [{module: "alert"}, {module: "MMM-Boards"}, {
+            module: 'MMM-KeyBindings',
+            config: {
+                enableNotifyServer: false,
+                enableMousetrap: true,
+            }
+        },], // modules that require no positions
         boards: [
             {
-                upperLeft: [{ module: "MMM-Placeholder" }],
-                lowerLeft: [{ module: "MMM-Placeholder" }],
-                upperRight: [{ module: "MMM-Placeholder" }],
-                lowerRight: [{ module: "MMM-Placeholder" }],
+                upperLeft: [{module: "MMM-Placeholder"}],
+                lowerLeft: [{module: "MMM-Placeholder"}],
+                upperRight: [{module: "MMM-Placeholder"}],
+                lowerRight: [{module: "MMM-Placeholder"}],
             },
             {
-                upperLeft: [{ module: "MMM-Placeholder" }],
-                lowerLeft: [{ module: "MMM-Placeholder" }],
-                upperRight: [{ module: "MMM-Placeholder" }],
-                lowerRight: [{ module: "MMM-Placeholder" }],
+                upperLeft: [{module: "MMM-Placeholder"}],
+                lowerLeft: [{module: "MMM-Placeholder"}],
+                upperRight: [{module: "MMM-Placeholder"}],
+                lowerRight: [{module: "MMM-Placeholder"}],
             },
         ],
-        footer: [{ module: "MMM-SpeechBubble" }],
+        footer: [{module: "MMM-SpeechBubble"}],
     },
 };
 

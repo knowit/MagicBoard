@@ -3,7 +3,7 @@ Module.register("MMM-Jira", {
     // Load required additional scripts
     defaults: {
         width: 1200,
-        height: 400,
+        height: 700,
         chartLineColor: "rgb(45, 41, 38)",
         chartAreaColor: "rgba(201, 226, 224, 1)",
         updateInterval: 1000 * 60,
@@ -126,8 +126,10 @@ Module.register("MMM-Jira", {
                             display: true,
                             ticks: {
                                 fontColor: 'white',
-                                fontSize: 10,
-                                fontFamily: "'Raleway', sans-serif"
+                                fontSize: 14,
+                                fontFamily: "'Raleway', sans-serif",
+                                maxRotation: 90,
+                                minRotation: 90
                             },
                             gridLines: {
                                 display: false,
@@ -153,7 +155,7 @@ Module.register("MMM-Jira", {
                         labels: {
                             // This more specific font property overrides the global property
                             fontColor: 'white',
-                            fontSize: 10,
+                            fontSize: 14,
                         }
                     },
                     plugins: {
@@ -165,7 +167,7 @@ Module.register("MMM-Jira", {
                             display: () => true,
                             formatter: (value) => parseFloat(value).toFixed(0),
                             font: {
-                                size: 10,
+                                size: 14,
                                 family: "'Raleway', sans-serif"
                             },
                         }
@@ -178,8 +180,13 @@ Module.register("MMM-Jira", {
     getDom: async function () {
         const wrapper = document.createElement('canvas');
         wrapper.id = "chart";
+
         wrapper.width = this.config.width;
         wrapper.height = this.config.height;
+
+        wrapper.style.width = "inherit";
+        wrapper.style.height = "inherit";
+
         const ctx = wrapper.getContext("2d");
         const data = await this.fetchJiraData();
         this.generateChart(ctx, data);
