@@ -118,7 +118,12 @@ Module.register('MMM-Facial-Recognition-OCV3',{
 	},
 
 	notificationReceived: function(notification, payload, sender) {
-		if (notification === 'DOM_OBJECTS_CREATED') {
+		if(notification === "KEYPRESS"){
+		    if(payload.KeyName === "ArrowUp"){  //  TODO change key
+		        this.sendSocketNotification("FACIAL_RECOGNITION_TOGGLE");
+            }
+
+		/*if (notification === 'DOM_OBJECTS_CREATED') {
       var self = this;
 			/*MM.getModules().exceptWithClass("default").enumerate(function(module) {
 				module.hide(1000, function() {
