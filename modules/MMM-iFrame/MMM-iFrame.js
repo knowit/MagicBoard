@@ -1,32 +1,19 @@
 /* global Module */
 
-/* Magic Mirror
- * Module: iFrame
- *
- * By Ben Williams http://desertblade.com
- * MIT Licensed.
- */
-
 Module.register("MMM-iFrame", {
 	// Default module config.
 	defaults: {
-		updateInterval: 60 * 1000,
 		url: ["http://magicmirror.builders/"],
 		scrolling: "no",
 	},
 
-	start: function() {
-		this.nextUrlIndex = 0;
-		const self = this;
+    start: function() {
+	    this.nextUrlIndex = 0;
+    },
 
-		setInterval(function() {
-			self.updateDom();
-		}, this.config.updateInterval);
-	},
-
+    //  Updates dom every time the module is shown on the board
 	resume: function() {
-		console.log("Resuming");
-		return this.getDom();
+	    this.updateDom()
 	},
 
 	// Override dom generator.
@@ -38,13 +25,9 @@ Module.register("MMM-iFrame", {
 		iframe.style.height = "inherit";
 		iframe.scrolling = this.config.scrolling;
 
-		const futureURL = this.config.url[this.nextUrlIndex];
-		iframe.src = futureURL;
+		iframe.src = this.config.url[this.nextUrlIndex];
 
-		this.nextUrlIndex++;
-		if (this.nextUrlIndex >= this.config.url.length) {
-			this.nextUrlIndex = 0;
-		}
+		if ((this.nextUrlIndex += 1) >= this.config.url.length) this.nextUrlIndex = 0;
 
 		return iframe;
 	},
