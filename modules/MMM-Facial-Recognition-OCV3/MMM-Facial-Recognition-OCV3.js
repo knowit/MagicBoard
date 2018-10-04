@@ -7,136 +7,191 @@
  * MIT Licensed.
  */
 
-Module.register('MMM-Facial-Recognition-OCV3',{
+Module.register('MMM-Facial-Recognition-OCV3', {
 
-	defaults: {
-		// Threshold for the confidence of a recognized face before it's considered a
-		// positive match.  Confidence values below this threshold will be considered
-		// a positive match because the lower the confidence value, or distance, the
-		// more confident the algorithm is that the face was correctly detected.
-		threshold: 50,
-		// force the use of a usb webcam on raspberry pi (on other platforms this is always true automatically)
-		useUSBCam: false,
-		// Path to your training xml
-		trainingFile: 'modules/MMM-Facial-Recognition-OCV3/training.xml',
-		// recognition intervall in seconds (smaller number = faster but CPU intens!)
-		interval: 2,
-		// Logout delay after last recognition so that a user does not get instantly logged out if he turns away from the mirror for a few seconds
-		logoutDelay: 15,
-		// Array with usernames (copy and paste from training script)
-		users: [],
-		//Module set used for strangers and if no user is detected
-		defaultClass: "default",
-		//Set of modules which should be shown for every user
-		everyoneClass: "everyone",
-		// Boolean to toggle welcomeMessage
-		welcomeMessage: true
-	},
+    defaults: {
+        // Threshold for the confidence of a recognized face before it's considered a
+        // positive match.  Confidence values below this threshold will be considered
+        // a positive match because the lower the confidence value, or distance, the
+        // more confident the algorithm is that the face was correctly detected.
+        threshold: 50,
+        // force the use of a usb webcam on raspberry pi (on other platforms this is always true automatically)
+        useUSBCam: false,
+        // Path to your training xml
+        trainingFile: 'modules/MMM-Facial-Recognition-OCV3/training.xml',
+        // recognition intervall in seconds (smaller number = faster but CPU intens!)
+        interval: 2,
+        // Logout delay after last recognition so that a user does not get instantly logged out if he turns away from the mirror for a few seconds
+        logoutDelay: 15,
+        // Array with usernames (copy and paste from training script)
+        users: [],
+        //Module set used for strangers and if no user is detected
+        defaultClass: "default",
+        //Set of modules which should be shown for every user
+        everyoneClass: "everyone",
+        // Boolean to toggle welcomeMessage
+        welcomeMessage: true
+    },
 
-	// Define required translations.
-	getTranslations: function() {
-		return {
-			en: "translations/en.json",
-			de: "translations/de.json",
-      			es: "translations/es.json",
-      			zh: "translations/zh.json",
-      			nl: "translations/nl.json",
-			sv: "translations/sv.json",
-			fr: "translations/fr.json",
-			id: "translations/id.json"
-		};
-	},
+    start: function () {
+        this.current_user = null;
+        this.sendSocketNotification('CONFIG', this.config);
+        Log.info('Starting module: ' + this.name);
 
-	login_user: function () {
+    },
 
-    var self = this;
+    getScripts: function () {
+        return ["classie.js", "modernizr.custom.js", "webcamnotification.js", "webcam.js"];
+    },
 
-		/*MM.getModules().withClass(this.config.defaultClass).exceptWithClass(this.config.everyoneClass).enumerate(function(module) {
-			module.hide(1000, function() {
-				Log.log(module.name + ' is hidden.');
-			}, {lockString: self.identifier});
-		});
+    // Define required translations.
+    getTranslations: function () {
+        return {
+            en: "translations/en.json",
+            de: "translations/de.json",
+            es: "translations/es.json",
+            zh: "translations/zh.json",
+            nl: "translations/nl.json",
+            sv: "translations/sv.json",
+            fr: "translations/fr.json",
+            id: "translations/id.json"
+        };
+    },
 
-		MM.getModules().withClass(this.current_user).enumerate(function(module) {
-			module.show(1000, function() {
-				Log.log(module.name + ' is shown.');
-			}, {lockString: self.identifier});
-		});*/
+    login_user: function () {
+        var self = this;
 
-		this.sendNotification("CURRENT_USER", this.current_user);
-	},
-	logout_user: function () {
+        /*MM.getModules().withClass(this.config.defaultClass).exceptWithClass(this.config.everyoneClass).enumerate(function(module) {
+            module.hide(1000, function() {
+                Log.log(module.name + ' is hidden.');
+            }, {lockString: self.identifier});
+        });
 
-    var self = this;
+        MM.getModules().withClass(this.current_user).enumerate(function(module) {
+            module.show(1000, function() {
+                Log.log(module.name + ' is shown.');
+            }, {lockString: self.identifier});
+        });*/
 
-		/*MM.getModules().withClass(this.current_user).enumerate(function(module) {
-			module.hide(1000, function() {
-				Log.log(module.name + ' is hidden.');
-			}, {lockString: self.identifier});
-		});
+        this.sendNotification("CURRENT_USER", this.current_user);
+    },
+    logout_user: function () {
+        var self = this;
 
-		MM.getModules().withClass(this.config.defaultClass).exceptWithClass(this.config.everyoneClass).enumerate(function(module) {
-			module.show(1000, function() {
-				Log.log(module.name + ' is shown.');
-			}, {lockString: self.identifier});
-		});*/
+        /*MM.getModules().withClass(this.current_user).enumerate(function(module) {
+            module.hide(1000, function() {
+                Log.log(module.name + ' is hidden.');
+            }, {lockString: self.identifier});
+        });
 
-		this.sendNotification("CURRENT_USER", "None");
-	},
+        MM.getModules().withClass(this.config.defaultClass).exceptWithClass(this.config.everyoneClass).enumerate(function(module) {
+            module.show(1000, function() {
+                Log.log(module.name + ' is shown.');
+            }, {lockString: self.identifier});
+        });*/
 
-	// Override socket notification handler.
-	socketNotificationReceived: function(notification, payload) {
-		if (payload.action === "login"){
-			if (this.current_user_id !== payload.user){
-				this.logout_user();
-			}
-			if (payload.user === -1){
+        this.sendNotification("CURRENT_USER", "None");
+    },
+
+    // Override socket notification handler.
+    socketNotificationReceived: function (notification, payload) {
+        if (payload.action === "login") {
+            if (this.current_user_id !== payload.user) {
+                this.logout_user();
+            }
+            if (payload.user === -1) {
                 if (this.config.welcomeMessage) {
                     //this.sendNotification("FACE_RECOGNITION_USER_LOGIN", this.translate("unknownPerson"));
                     //this.sendNotification("SHOW_ALERT", {type: "notification", message: this.translate("message").replace("%person", this.current_user), title: this.translate("title")});
                 }
-				this.current_user_id = payload.user;
-			}
-			else{
-				this.current_user = this.config.users[payload.user];
+                this.current_user_id = payload.user;
+            }
+            else {
+                this.current_user = this.config.users[payload.user];
                 if (this.config.welcomeMessage) {
                     this.sendNotification("FACE_RECOGNITION_USER_LOGIN", this.translate("knownPerson").replace("%person", this.current_user));
                     this.current_user_id = payload.user;
                     this.login_user();
                     //this.sendNotification("SHOW_ALERT", {type: "notification", message: this.translate("message").replace("%person", this.current_user), title: this.translate("title")});
                 }
-				//this.current_user_id = payload.user;
-				//this.login_user();
-			}
-
-		}
-		else if (payload.action === "logout"){
-            this.sendNotification("FACE_RECOGNITION_USER_LOGOUT", this.translate("logout"));
-			this.logout_user();
-			this.current_user = null;
-		}
-	},
-
-	notificationReceived: function(notification, payload, sender) {
-		if(notification === "KEYPRESS"){
-		    if(payload.KeyName === "ArrowUp"){  //  TODO change key
-		        this.sendSocketNotification("FACIAL_RECOGNITION_TOGGLE");
+                //this.current_user_id = payload.user;
+                //this.login_user();
             }
 
-		/*if (notification === 'DOM_OBJECTS_CREATED') {
-      var self = this;
-			/*MM.getModules().exceptWithClass("default").enumerate(function(module) {
-				module.hide(1000, function() {
-					Log.log('Module is hidden.');
-				}, {lockString: self.identifier});
-			});*/
-		}
-	},
+        }
+        else if (payload.action === "logout") {
+            this.sendNotification("FACE_RECOGNITION_USER_LOGOUT", this.translate("logout"));
+            this.logout_user();
+            this.current_user = null;
+        }
+    },
 
-	start: function() {
-		this.current_user = null;
-		this.sendSocketNotification('CONFIG', this.config);
-		Log.info('Starting module: ' + this.name);
-	}
+    notificationReceived: function (notification, payload, sender) {
+        if (notification === "KEYPRESS") {
+            if (payload.KeyName === "ArrowUp") {  //  TODO change key
+
+                //this.sendSocketNotification("FACIAL_RECOGNITION_TOGGLE");
+                this.show_alert()
+            }
+            /*if (notification === 'DOM_OBJECTS_CREATED') {
+          var self = this;
+                /*MM.getModules().exceptWithClass("default").enumerate(function(module) {
+                    module.hide(1000, function() {
+                        Log.log('Module is hidden.');
+                    }, {lockString: self.identifier});
+                });*/
+        }
+    },
+
+    show_alert: function () {
+        var self = this;
+        //Set standard params if not provided by module
+        let timer = null;
+        //Create overlay
+        var overlay = document.createElement("div");
+        overlay.id = "overlay";
+        overlay.innerHTML += "<div class=\"black_overlay\"></div>";
+        document.body.insertBefore(overlay, document.body.firstChild);
+
+        //Store alert in this.alerts
+        this.alert = new WebcamNotification();
+
+        overlay.appendChild(this.alert);
+
+        //Show alert
+        this.alert.show();
+        //Add timer to dismiss alert and overlay
+        if (timer) {
+            setTimeout(function () {
+                self.hide_alert();
+            }, timer);
+        }
+
+    },
+    hide_alert: function () {
+        //Dismiss alert and remove from this.alerts
+        if (this.alert) {
+            this.alert.dismiss();
+            this.alert = null;
+            //Remove overlay
+            var overlay = document.getElementById("overlay");
+            overlay.parentNode.removeChild(overlay);
+        }
+    },
+    setPosition: function (pos) {
+        //Add css to body depending on the set position for notifications
+        var sheet = document.createElement("style");
+        if (pos === "center") {
+            sheet.innerHTML = ".ns-box {margin-left: auto; margin-right: auto;text-align: center;}";
+        }
+        if (pos === "right") {
+            sheet.innerHTML = ".ns-box {margin-left: auto;text-align: right;}";
+        }
+        if (pos === "left") {
+            sheet.innerHTML = ".ns-box {margin-right: auto;text-align: left;}";
+        }
+        document.body.appendChild(sheet);
+
+    },
 
 });
