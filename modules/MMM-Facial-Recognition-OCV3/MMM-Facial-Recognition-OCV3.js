@@ -112,26 +112,32 @@ Module.register('MMM-Facial-Recognition-OCV3', {
                     this.sendNotification("FACE_RECOGNITION_USER_LOGIN", this.translate("knownPerson").replace("%person", this.current_user));
                     this.current_user_id = payload.user;
                     this.login_user();
-                    //this.sendNotification("SHOW_ALERT", {type: "notification", message: this.translate("message").replace("%person", this.current_user), title: this.translate("title")});
                 }
                 //this.current_user_id = payload.user;
                 //this.login_user();
             }
 
         }
+        /*else if(payload.action === "logout_with_delay"){
+            this.sendNotification("FACE_RECOGNITION_USER_LOGOUT", this.translate("logout"));
+            this.logout_user();
+            this.current_user = null;
+            this.toggleFacialRecognition();
+
+        }*/
         else if (payload.action === "logout") {
             this.sendNotification("FACE_RECOGNITION_USER_LOGOUT", this.translate("logout"));
             this.logout_user();
             this.current_user = null;
+            this.toggleFacialRecognition();
         }
     },
 
     notificationReceived: function (notification, payload, sender) {
+        console.log(notification, payload);
         if (notification === "KEYPRESS") {
             if (payload.KeyName === "ArrowUp") {  //  TODO change key
-
-                //this.sendSocketNotification("FACIAL_RECOGNITION_TOGGLE");
-                this.show_alert()
+                this.toggleFacialRecognition();
             }
             /*if (notification === 'DOM_OBJECTS_CREATED') {
           var self = this;
@@ -143,41 +149,18 @@ Module.register('MMM-Facial-Recognition-OCV3', {
         }
     },
 
-    show_alert: function () {
-        var self = this;
-        //Set standard params if not provided by module
-        let timer = null;
-        //Create overlay
-        var overlay = document.createElement("div");
-        overlay.id = "overlay";
-        overlay.innerHTML += "<div class=\"black_overlay\"></div>";
-        document.body.insertBefore(overlay, document.body.firstChild);
-
-        //Store alert in this.alerts
-        this.alert = new WebcamNotification();
-
-        overlay.appendChild(this.alert);
-
-        //Show alert
-        this.alert.show();
-        //Add timer to dismiss alert and overlay
-        if (timer) {
-            setTimeout(function () {
-                self.hide_alert();
-            }, timer);
-        }
-
-    },
-    hide_alert: function () {
-        //Dismiss alert and remove from this.alerts
-        if (this.alert) {
-            this.alert.dismiss();
+    toggleFacialRecognition: function () {
+        this.sendSocketNotification("FACIAL_RECOGNITION_TOGGLE");
+        if(this.alert){
+            this.alert.toggleOnOff();
             this.alert = null;
-            //Remove overlay
-            var overlay = document.getElementById("overlay");
-            overlay.parentNode.removeChild(overlay);
+        }
+        else{
+            this.alert = new WebcamNotification();
+            this.alert.toggleOnOff();
         }
     },
+
     setPosition: function (pos) {
         //Add css to body depending on the set position for notifications
         var sheet = document.createElement("style");
@@ -193,5 +176,4 @@ Module.register('MMM-Facial-Recognition-OCV3', {
         document.body.appendChild(sheet);
 
     },
-
 });

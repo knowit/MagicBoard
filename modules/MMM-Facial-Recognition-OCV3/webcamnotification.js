@@ -48,14 +48,14 @@
         // for attached layout: flip|bouncyflip
         // for other layout: boxspinner|cornerexpand|loadingcircle|thumbslider
         // ...
-        effect: "slide",
+        effect: "slide-center",
         // notice, warning, error, success
         // will add class ns-type-warning, ns-type-error or ns-type-success
         type: "notice",
         // if the user doesn´t close the notification then we remove it
         // after the following time
         ttl: 6000,
-        al_no: "ns-alert",
+        al_no: "ns-alert", //"ns-box"
         // callbacks
         onClose: function () {
             return false;
@@ -70,81 +70,36 @@
      * initialize and cache some vars
      */
     WebcamNotification.prototype._init = function () {
-        var wrapper = document.createElement("div");
-
-        let camera = document.createElement("div");
-        let counter = document.createElement("div")
-        counter.style = "text-align: center; padding-bottom: 10px;";
-        counter.className = "large normal";
-
-        camera.appendChild(counter);
-        let cameraPreview = document.createElement("div");
-        camera.appendChild(cameraPreview);
-        let snapshot = document.createElement("div");
-        camera.appendChild(snapshot)
-        let commands = document.createElement("div");
-        commands.innerHTML = "Test";
-        commands.className = "small light dimmed";
-        commands.style = "padding-top: 10px;"
-        camera.appendChild(commands);
-
-        wrapper.appendChild(camera);
-
-        Webcam.set({
-            width: 640,
-            height: 480,
-            image_format: 'jpeg',
-            jpeg_quality: 90,
-            constraints: {
-                mandatory: {
-                    minWidth: 640,
-                    minHeight: 480
-                },
-                optional: [
-                    { minFrameRate: 60 }
-                ]
-            }
-        });
-
-        Webcam.attach(cameraPreview);
+        this.active = false;
 
         // create HTML structure
         this.ntf = document.createElement("div");
+        this.ntf.style.backgroundColor = "maroon";
         this.ntf.className = this.options.al_no + " ns-" + this.options.layout + " ns-effect-" + this.options.effect + " ns-type-" + this.options.type;
-        this.ntf.appendChild(wrapper);
+        this.ntf.innerHTML = "<span class='light' style='font-size:28px;line-height: 30px;'>" + "Facial Recognition On" + "</span>";
+        //this.ntf.appendChild(wrapper);
 
         // append to body or the element specified in options.wrapper
         this.options.wrapper.insertBefore(this.ntf, this.options.wrapper.nextSibling);
-
-        // dismiss after [options.ttl]ms
-        var self = this;
-        if (this.options.ttl) {
-            this.dismissttl = setTimeout(function () {
-                if (self.active) {
-                    self.dismiss();
-                }
-            }, this.options.ttl);
-        }
-
-        // init events*/
-        this._initEvents();
     };
 
     /**
      * init events
      */
-    WebcamNotification.prototype._initEvents = function () {
-        var self = this;
-        // dismiss notification by tapping on it if someone has a touchscreen
-        this.ntf.querySelector(".ns-box-inner").addEventListener("click", function () {
-            self.dismiss();
-        });
+
+    WebcamNotification.prototype.toggleOnOff = function () {
+        if(this.active){
+            this.dismiss();
+        }else{
+            this.show();
+        }
     };
 
     /**
      * show the notification
      */
     WebcamNotification.prototype.show = function () {
+        console.log("======== SHOWING");
         this.active = true;
         classie.remove(this.ntf, "ns-hide");
         classie.add(this.ntf, "ns-show");
