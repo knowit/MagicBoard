@@ -44,6 +44,10 @@ Module.register('MMM-Facial-Recognition-OCV3', {
         return ["classie.js", "modernizr.custom.js", "webcamnotification.js", "webcam.js"];
     },
 
+    getStyles: function() {
+        return ["MMM-Facial-Recognition-OCV3.css"];
+    },
+
     // Define required translations.
     getTranslations: function () {
         return {
@@ -159,21 +163,5 @@ Module.register('MMM-Facial-Recognition-OCV3', {
             this.alert = new WebcamNotification();
             this.alert.toggleOnOff();
         }
-    },
-
-    setPosition: function (pos) {
-        //Add css to body depending on the set position for notifications
-        var sheet = document.createElement("style");
-        if (pos === "center") {
-            sheet.innerHTML = ".ns-box {margin-left: auto; margin-right: auto;text-align: center;}";
-        }
-        if (pos === "right") {
-            sheet.innerHTML = ".ns-box {margin-left: auto;text-align: right;}";
-        }
-        if (pos === "left") {
-            sheet.innerHTML = ".ns-box {margin-right: auto;text-align: left;}";
-        }
-        document.body.appendChild(sheet);
-
     },
 });

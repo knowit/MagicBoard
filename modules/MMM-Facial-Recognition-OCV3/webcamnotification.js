@@ -77,7 +77,6 @@
         this.ntf.style.backgroundColor = "maroon";
         this.ntf.className = this.options.al_no + " ns-" + this.options.layout + " ns-effect-" + this.options.effect + " ns-type-" + this.options.type;
         this.ntf.innerHTML = "<span class='light' style='font-size:28px;line-height: 30px;'>" + "Facial Recognition On" + "</span>";
-        //this.ntf.appendChild(wrapper);
 
         // append to body or the element specified in options.wrapper
         this.options.wrapper.insertBefore(this.ntf, this.options.wrapper.nextSibling);
@@ -88,9 +87,9 @@
      */
 
     WebcamNotification.prototype.toggleOnOff = function () {
-        if(this.active){
+        if (this.active) {
             this.dismiss();
-        }else{
+        } else {
             this.show();
         }
     };
@@ -99,7 +98,6 @@
      * show the notification
      */
     WebcamNotification.prototype.show = function () {
-        console.log("======== SHOWING");
         this.active = true;
         classie.remove(this.ntf, "ns-hide");
         classie.add(this.ntf, "ns-show");
