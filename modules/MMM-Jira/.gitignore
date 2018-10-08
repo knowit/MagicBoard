@@ -1,2 +1,5 @@
 node_modules
 app_constants.py
+*.pyc
+*.pyo
+__pycache__/
