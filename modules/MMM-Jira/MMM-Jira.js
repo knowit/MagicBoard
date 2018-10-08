@@ -3,7 +3,7 @@ Module.register("MMM-Jira", {
     // Load required additional scripts
     defaults: {
         width: 1200,
-        height: 700,
+        height: 600,
         chartLineColor: "rgb(45, 41, 38)",
         chartAreaColor: "rgba(201, 226, 224, 1)",
         updateInterval: 1000 * 60,
@@ -14,7 +14,6 @@ Module.register("MMM-Jira", {
     getScripts: function () {
         return [
             "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js",
-            this.file("scripts/chartjs-plugin-datalabels.js")
         ];
     },
 
@@ -28,10 +27,6 @@ Module.register("MMM-Jira", {
         setInterval(function () {
             self.sendSocketNotification("JIRA_GET_DATA", self.config);
         }, self.config.dataUpdateInterval);
-
-        setInterval(function () {
-            self.updateDom();
-        }, self.config.updateInterval);
     },
 
     socketNotificationReceived(notification, payload) {
@@ -41,27 +36,37 @@ Module.register("MMM-Jira", {
         }
     },
 
-    fetchJiraData: async function () {
+    fetchJiraData: function () {
         if (this.jira_data === "NO_JIRA_DATA") {
             console.log(this.name + ": NO_JIRA_DATA");
-            return {x: [0], y: [0]};
+            return { x: [0], y: [0] };
         }
 
-        const monthNames = ["Januar", "Februar", "Mars", "April", "Mai", "Juni",
-            "Juli", "August", "September", "Oktober", "November", "Desember"
+        const monthNames = [
+            "Januar",
+            "Februar",
+            "Mars",
+            "April",
+            "Mai",
+            "Juni",
+            "Juli",
+            "August",
+            "September",
+            "Oktober",
+            "November",
+            "Desember",
         ];
 
-        const current_year = (new Date()).getFullYear();
+        const current_year = new Date().getFullYear();
         let title = "";
 
         const x = [];
         const y = [];
 
-        const json_years= this.jira_data["status"]["years"];
+        const json_years = this.jira_data["status"]["years"];
 
         Object.entries(json_years).forEach(([key, value]) => {
-            if(value["year"] === current_year) {
-
+            if (value["year"] === current_year) {
                 if (this.config.viewRotation[this.current_view] === "month") {
                     Object.entries(value["months"]).forEach(([key, value]) => {
                         x.push(monthNames[value["month"] - 1]);
@@ -69,32 +74,36 @@ Module.register("MMM-Jira", {
 
                         title = "Anbud per mnd i " + current_year;
                     });
-                }
-                else if(this.config.viewRotation[this.current_view] === "week"){
+                } else if (
+                    this.config.viewRotation[this.current_view] === "week"
+                ) {
                     Object.entries(value["weeks"]).forEach(([key, value]) => {
                         x.push(value["week"]);
                         y.push(value["week_count"]);
 
                         title = "Anbud per uke i " + current_year;
                     });
-                }
-                else if(this.config.viewRotation[this.current_view] === "status"){
-                    Object.entries(value["issue_statuses"]).forEach(([key, value]) => {
-                        x.push(value["status"]);
-                        y.push(value["status_count"]);
+                } else if (
+                    this.config.viewRotation[this.current_view] === "status"
+                ) {
+                    Object.entries(value["issue_statuses"]).forEach(
+                        ([key, value]) => {
+                            x.push(value["status"]);
+                            y.push(value["status_count"]);
 
-                        title = "Status på anbud i " + current_year;
-                    });
+                            title = "Status på anbud i " + current_year;
+                        },
+                    );
                 }
 
                 this.current_view++;
-                if(this.current_view >= this.config.viewRotation.length){
+                if (this.current_view >= this.config.viewRotation.length) {
                     this.current_view = 0;
                 }
             }
         });
 
-        return {x: x, y: y, title: title};
+        return { x: x, y: y, title: title };
     },
 
     generateChart: function (canvas, chartData) {
@@ -118,7 +127,7 @@ Module.register("MMM-Jira", {
                         display: true,
                         text: chartData.title,
                         fontColor: "white",
-                        fontSize: 14,
+                        fontSize: 24,
                         fontFamily: "'Raleway', sans-serif"
                     },
                     scales: {
@@ -126,7 +135,7 @@ Module.register("MMM-Jira", {
                             display: true,
                             ticks: {
                                 fontColor: 'white',
-                                fontSize: 14,
+                                fontSize: 22,
                                 fontFamily: "'Raleway', sans-serif",
                                 maxRotation: 90,
                                 minRotation: 90
@@ -167,7 +176,7 @@ Module.register("MMM-Jira", {
                             display: () => true,
                             formatter: (value) => parseFloat(value).toFixed(0),
                             font: {
-                                size: 14,
+                                size: 22,
                                 family: "'Raleway', sans-serif"
                             },
                         }
@@ -177,18 +186,16 @@ Module.register("MMM-Jira", {
         }
     },
     // Override dom generator.
-    getDom: async function () {
-        const wrapper = document.createElement('canvas');
+    getDom: function () {
+        const wrapper = document.createElement("canvas");
         wrapper.id = "chart";
-
         wrapper.width = this.config.width;
         wrapper.height = this.config.height;
 
         wrapper.style.width = "inherit";
         wrapper.style.height = "inherit";
-
         const ctx = wrapper.getContext("2d");
-        const data = await this.fetchJiraData();
+        const data = this.fetchJiraData();
         this.generateChart(ctx, data);
 
         return wrapper;
