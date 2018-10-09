@@ -82,17 +82,17 @@ class ToolsConfig (CommonConfig):
         
     @classmethod
     def getCamera(cls):
-        try:
-            import lib.common.picam as picam
-            print("Loading PiCamera")
-            capture = picam.OpenCVCapture(True)
-            print("PiCamera loaded")
-            capture.start()
-            return capture
-        except Exception as e:
-            print(e)
-            import lib.common.webcam as webcam
-            return webcam.OpenCVCapture(device_id=0)
+        #try:
+         #   import lib.common.picam as picam
+          #  print("Loading PiCamera")
+          #  capture = picam.OpenCVCapture(True)
+          #  print("PiCamera loaded")
+           # capture.start()
+          #  return capture
+       # except Exception as e:
+            #print(e)
+        import lib.common.webcam as webcam
+        return webcam.OpenCVCapture(device_id=1)
 
     @classmethod
     def model(cls):

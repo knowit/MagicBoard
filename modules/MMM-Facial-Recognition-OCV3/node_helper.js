@@ -14,7 +14,7 @@ module.exports = NodeHelper.create({
         }
         else if (notification === "FACIAL_RECOGNITION_TOGGLE") {
             if (!pythonRunning) {
-                console.log(this.name + " FACIAL_RECOGNITION_START");
+                console.log(this.name, "FACIAL_RECOGNITION_START");
                 pyshell = new PythonShell('modules/' + this.name + '/lib/mm/facerecognition.py', {
                     mode: 'json',
                     args: [JSON.stringify(this.config)]
@@ -23,7 +23,7 @@ module.exports = NodeHelper.create({
                 this.pythonStart();
             }
             else {
-                console.log(this.name + " FACIAL_RECOGNITION_STOP");
+                console.log(this.name, "FACIAL_RECOGNITION_STOP");
                 pythonRunning = false;
                 this.pythonStop();
             }
@@ -34,11 +34,10 @@ module.exports = NodeHelper.create({
         const self = this;
 
         pyshell.on('message', function (message) {
-
             if (message.hasOwnProperty('status')) {
                 console.log("[" + self.name + "] " + message.status);
             }
-            if (message.hasOwnProperty('login')) {
+            else if (message.hasOwnProperty('login')) {
                 console.log("[" + self.name + "] " + "User " + self.config.users[message.login.user - 1] + " with confidence " + message.login.confidence + " logged in.");
                 self.sendSocketNotification('user', {
                     action: "login",
@@ -46,7 +45,7 @@ module.exports = NodeHelper.create({
                     confidence: message.login.confidence
                 });
             }
-            if (message.hasOwnProperty('logout')) {
+            else if (message.hasOwnProperty('logout')) {
                 console.log("[" + self.name + "] " + "User " + self.config.users[message.logout.user - 1] + " logged out.");
                 self.sendSocketNotification('user', {action: "logout", user: message.logout.user - 1});
             }
@@ -61,5 +60,4 @@ module.exports = NodeHelper.create({
     pythonStop: function () {
         pyshell.childProcess.kill("SIGINT");
     }
-
 });
