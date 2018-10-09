@@ -27,10 +27,16 @@ Module.register("MMM-SmartButton", {
         );
 
         if (notification === "BUTTON_PRESSED") {
-            console.log("Hei buton has been pressed " + payload);
+
             if(payload == 1){
-                console.log("Starter kamera ");
                 this.sendNotification("BUTTON_TOGGLE_FACE_RECOGNITION", {});
+            }
+            if(payload == 2){
+                this.sendNotification("NEXT_BOARD", {});
+            }
+
+            if(payload == 3){
+                this.sendNotification("PREVIOUS_BOARD", {});
             }
         }
     },

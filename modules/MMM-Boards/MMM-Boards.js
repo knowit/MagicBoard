@@ -29,6 +29,14 @@ Module.register('MMM-Boards', {
             }
         }
 
+        if(notification === "NEXT_BOARD"){
+            this.selectBoard(1);
+        }
+
+        if(notification === "PREVIOUS_BOARD"){
+            this.selectBoard(-1);
+        }
+
         //  Selects first board to be shown when all doms are created. Starts the updatetimer.
        else if (notification === 'DOM_OBJECTS_CREATED') {
             const self = this;
