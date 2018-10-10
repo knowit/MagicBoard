@@ -37,14 +37,13 @@ Module.register('MMM-Facial-Recognition-OCV3', {
         this.current_user = null;
         this.sendSocketNotification('CONFIG', this.config);
         Log.info('Starting module: ' + this.name);
-
     },
 
     getScripts: function () {
         return ["classie.js", "modernizr.custom.js", "webcamnotification.js", "webcam.js"];
     },
 
-    getStyles: function() {
+    getStyles: function () {
         return ["MMM-Facial-Recognition-OCV3.css"];
     },
 
@@ -150,17 +149,36 @@ Module.register('MMM-Facial-Recognition-OCV3', {
                     }, {lockString: self.identifier});
                 });*/
         }
+        if(notification === "KEYPRESS"){
+            const self = this;
+            switch (payload.KeyName) {
+                case "ArrowUp":
+                    self.toggleFacialRecognition();
+                    break;
+                default:
+                    break;
+            }
+        }
+
     },
 
     toggleFacialRecognition: function () {
         this.sendSocketNotification("FACIAL_RECOGNITION_TOGGLE");
-        if(this.alert){
+        if (this.alert) {
             this.alert.toggleOnOff();
             this.alert = null;
         }
-        else{
+        else {
             this.alert = new WebcamNotification();
             this.alert.toggleOnOff();
+
+            const self = this;
+            setTimeout(function () {
+                if (self.current_user === null) {
+                    self.toggleFacialRecognition();
+                }
+            }, 1000 * (self.config.logoutDelay + 5));
+
         }
     },
 });
