@@ -1,7 +1,9 @@
 const NodeHelper = require("node_helper");
 const SerialPort = require("serialport");
 const Readline = require("@serialport/parser-readline");
-const port = new SerialPort("COM3", { baudRate: 9600 });
+
+
+const port = new SerialPort(config.comportSmartButton, { baudRate: 9600 });
 const parser = port.pipe(new Readline({ delimiter: "\n" }));
 
 module.exports = NodeHelper.create({
@@ -20,5 +22,13 @@ module.exports = NodeHelper.create({
         if (notification === "START_BUTTON_LISTENING") {
             this.subscribe_motion();
         }
+
+        if (notification === "FACE_RECOGNITION_USER_LOGOUT") {
+            port.write("TURN_OFF_BUTTON_LIGHT"); //Turn off faceial recognition light on controller.
+
+        }
+
     },
+
+
 });
