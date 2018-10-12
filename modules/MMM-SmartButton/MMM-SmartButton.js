@@ -15,6 +15,13 @@ Module.register("MMM-SmartButton", {
         this.sendSocketNotification("START_BUTTON_LISTENING", {});
     },
 
+    notificationReceived: function(notification, payload){
+        if (notification === "FACE_RECOGNITION_USER_LOGOUT") {
+            this.sendSocketNotification("TURN_OFF_BUTTON_LIGHT")
+        }
+    },
+
+
     // the socket handler
     socketNotificationReceived: function(notification, payload) {
 

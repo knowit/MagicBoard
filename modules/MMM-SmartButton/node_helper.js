@@ -20,11 +20,12 @@ module.exports = NodeHelper.create({
     // Subclass socketNotificationReceived received.
     socketNotificationReceived: function(notification, payload) {
         if (notification === "START_BUTTON_LISTENING") {
+            port.write("TURN_OFF_BUTTON_LIGHT"); //Turn off facial recognition light on controller on startup
             this.subscribe_motion();
         }
 
-        if (notification === "FACE_RECOGNITION_USER_LOGOUT") {
-            port.write("TURN_OFF_BUTTON_LIGHT"); //Turn off faceial recognition light on controller.
+        if (notification === "TURN_OFF_BUTTON_LIGHT") {
+            port.write("TURN_OFF_BUTTON_LIGHT"); //Turn off facial recognition light on controller.
 
         }
 

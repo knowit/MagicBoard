@@ -167,6 +167,7 @@ Module.register('MMM-Facial-Recognition-OCV3', {
         if (this.alert) {
             this.alert.toggleOnOff();
             this.alert = null;
+            this.sendNotification("FACE_RECOGNITION_USER_LOGOUT");
         }
         else {
             this.alert = new WebcamNotification();
