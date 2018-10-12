@@ -1,0 +1,20 @@
+/* MMM-entur */
+
+.MMM-entur .container {
+	height: 100%;
+	width: 100%;
+	justify-content: space-around;
+}
+
+.mapboxgl-popup-close-button {
+	display: none;
+}
+
+.mapboxgl-popup-content {
+	color: #000;
+	font-family: "Raleway", sans-serif;
+}
+
+.mapboxgl-popup-content-wrapper {
+	padding: 1%;
+}
