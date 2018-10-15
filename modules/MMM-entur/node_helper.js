@@ -11,7 +11,7 @@ module.exports = NodeHelper.create({
         const self = this;
 
         if (notification === "GET_ENTUR_DATA") {
-            let pyshell = new PythonShell("modules/" + this.name + "/scripts/citybike.py", { mode: "json", args: [payload.longitude, payload.latitude, payload.max_distance]});
+            let pyshell = new PythonShell("modules/" + this.name + "/scripts/public_transport.py", { mode: "json", args: [payload.longitude, payload.latitude, payload.max_distance]});
 
             pyshell.on("message", function (message) {
                 self.sendSocketNotification("ENTUR_DATA", message)
