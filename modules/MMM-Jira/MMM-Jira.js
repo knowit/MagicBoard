@@ -1,6 +1,5 @@
 /* global Module */
 Module.register("MMM-Jira", {
-    // Load required additional scripts
     defaults: {
         width: 1200,
         height: 600,
@@ -11,6 +10,7 @@ Module.register("MMM-Jira", {
         viewRotation: ["month", "week", "status"],
     },
 
+    // Load required additional scripts
     getScripts: function () {
         return [
             "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js",
@@ -27,6 +27,10 @@ Module.register("MMM-Jira", {
         setInterval(function () {
             self.sendSocketNotification("JIRA_GET_DATA", self.config);
         }, self.config.dataUpdateInterval);
+        setInterval(function () {
+            self.updateDom();
+        }, self.config.updateInterval);
+
     },
 
     socketNotificationReceived(notification, payload) {
@@ -39,7 +43,7 @@ Module.register("MMM-Jira", {
     fetchJiraData: function () {
         if (this.jira_data === "NO_JIRA_DATA") {
             console.log(this.name + ": NO_JIRA_DATA");
-            return { x: [0], y: [0] };
+            return {x: [0], y: [0]};
         }
 
         const monthNames = [
@@ -67,48 +71,43 @@ Module.register("MMM-Jira", {
 
         Object.entries(json_years).forEach(([key, value]) => {
             if (value["year"] === current_year) {
-                if (this.config.viewRotation[this.current_view] === "month") {
-                    Object.entries(value["months"]).forEach(([key, value]) => {
-                        x.push(monthNames[value["month"] - 1]);
-                        y.push(value["month_count"]);
+                switch (this.config.viewRotation[this.current_view]) {
+                    case "month":
+                        Object.entries(value["months"]).forEach(([key, value]) => {
+                            x.push(monthNames[value["month"] - 1]);
+                            y.push(value["month_count"]);
 
-                        title = "Anbud per mnd i " + current_year;
-                    });
-                } else if (
-                    this.config.viewRotation[this.current_view] === "week"
-                ) {
-                    Object.entries(value["weeks"]).forEach(([key, value]) => {
-                        x.push(value["week"]);
-                        y.push(value["week_count"]);
+                            title = "Anbud per mnd i " + current_year;
+                        });
+                        break;
+                    case "week":
+                        Object.entries(value["weeks"]).forEach(([key, value]) => {
+                            x.push(value["week"]);
+                            y.push(value["week_count"]);
 
-                        title = "Anbud per uke i " + current_year;
-                    });
-                } else if (
-                    this.config.viewRotation[this.current_view] === "status"
-                ) {
-                    Object.entries(value["issue_statuses"]).forEach(
-                        ([key, value]) => {
-                            x.push(value["status"]);
-                            y.push(value["status_count"]);
+                            title = "Anbud per uke i " + current_year;
+                        });
+                        break;
+                    case "status":
+                        Object.entries(value["issue_statuses"]).forEach(
+                            ([key, value]) => {
+                                x.push(value["status"]);
+                                y.push(value["status_count"]);
 
-                            title = "Status på anbud i " + current_year;
-                        },
-                    );
-                }
-
-                this.current_view++;
-                if (this.current_view >= this.config.viewRotation.length) {
-                    this.current_view = 0;
+                                title = "Status på anbud i " + current_year;
+                            },
+                        );
+                        break;
                 }
             }
         });
 
-        return { x: x, y: y, title: title };
+        return {x: x, y: y, title: title};
     },
 
     generateChart: function (canvas, chartData) {
         if (chartData) {
-            const chart = new Chart(canvas, {
+            new Chart(canvas, {
                 type: 'bar',
                 data: {
                     labels: chartData.x,
@@ -156,16 +155,14 @@ Module.register("MMM-Jira", {
                     },
                     layout: {
                         padding: {
-                            right: 90,
+                            left: 10,
+                            right: 10,
+                            top: 10,
+                            bottom: 10
                         }
                     },
                     legend: {
                         display: false,
-                        labels: {
-                            // This more specific font property overrides the global property
-                            fontColor: 'white',
-                            fontSize: 14,
-                        }
                     },
                     plugins: {
                         datalabels: {
@@ -188,7 +185,6 @@ Module.register("MMM-Jira", {
     // Override dom generator.
     getDom: function () {
         const wrapper = document.createElement("canvas");
-        wrapper.id = "chart";
         wrapper.width = this.config.width;
         wrapper.height = this.config.height;
 
@@ -197,6 +193,8 @@ Module.register("MMM-Jira", {
         const ctx = wrapper.getContext("2d");
         const data = this.fetchJiraData();
         this.generateChart(ctx, data);
+
+        if ((this.current_view++) >= this.config.viewRotation.length - 1) this.current_view = 0;
 
         return wrapper;
     },
