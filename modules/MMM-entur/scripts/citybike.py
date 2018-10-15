@@ -22,50 +22,64 @@ def to_node(type, message):
     sys.stdout.flush()
 
 
-def sendGraphqlQuery(variables):
+def send_graphql_query(variables, min_coordinates, max_coordinates):
     query = """
     {
-      bikeRentalStations
-      {
-        id,
-        name,
-        description,
-        bikesAvailable,
-        spacesAvailable,
-        realtimeOccupancyAvailable,
-        allowDropoff,
-        networks,
-        longitude,
-        latitude
-      }
+        bikeRentalStationsByBbox(
+            minimumLatitude:""" + str(min_coordinates.latitude) + """,
+            minimumLongitude:""" + str(min_coordinates.longitude) + """,
+            maximumLatitude:""" + str(max_coordinates.latitude) + """,
+            maximumLongitude:""" + str(max_coordinates.longitude) + """){
+                id,
+                name,
+                description,
+                latitude,
+                longitude,
+                bikesAvailable,
+                spacesAvailable
+        }  
     }
     """
+
     data = {'query': query, 'variables': variables}
-
     req = urllib.request.Request(GRAPHQL_ENDPOINT, json.dumps(data).encode('utf-8'), HEADERS)
-
     response = urllib.request.urlopen(req, timeout=CONNECT_TIMEOUT_SECONDS)
+
     return response.read().decode('utf-8')
 
 
-def findCloseStations(stations):
+def find_close_stations():
     import geopy.distance
-
-    close_stations = []
+    from geopy.distance import VincentyDistance
 
     longitude = sys.argv[1]
     latitude = sys.argv[2]
     max_distance = float(sys.argv[3])
 
-    stations = json.loads(stations)
-    for station in stations["data"]["bikeRentalStations"]:
-        distance = geopy.distance.vincenty((latitude, longitude), (station["latitude"], station["longitude"])).m
-        if distance <= max_distance:
-            close_stations.append(station)
+    #longitude = 10.7602077
+    #latitude = 59.9165606
+    #max_distance = 500
 
-    return close_stations
+    origin = geopy.Point(latitude, longitude)
+
+    min_coordinates = VincentyDistance(meters=max_distance).destination(origin, 225)
+    max_coordinates = VincentyDistance(meters=max_distance).destination(origin, 45)
+
+    return send_graphql_query({}, min_coordinates, max_coordinates)
 
 
-response = sendGraphqlQuery({})
-to_node("stations", findCloseStations(response))
+def create_geojson():
+    stations = json.loads(find_close_stations())
 
+    stations = stations["data"]["bikeRentalStationsByBbox"]
+
+    features = []
+    for station in stations:
+        station_geojson = {"type": "Feature", "geometry": {"type": "Point", "coordinates": [station["longitude"], station["latitude"]]}, "properties": {"title": station["name"] + "\n" + str(station["bikesAvailable"]) + " bikes available", "icon": "citybike"}}
+        features.append(station_geojson)
+
+    stations_geojson = {"type": "FeatureCollection", "features": features}
+    to_node("stations", stations_geojson)
+
+
+create_geojson()
