@@ -75,7 +75,9 @@ def create_geojson():
 
     features = []
     for station in stations:
-        station_geojson = {"type": "Feature", "geometry": {"type": "Point", "coordinates": [station["longitude"], station["latitude"]]}, "properties": {"title": station["name"] + "\n" + str(station["bikesAvailable"]) + " bikes available", "icon": "citybike"}}
+        sum_bikes = station["bikesAvailable"] + station["spacesAvailable"]
+
+        station_geojson = {"type": "Feature", "geometry": {"type": "Point", "coordinates": [station["longitude"], station["latitude"]]}, "properties": {"title": station["name"] + "\n" + str(station["bikesAvailable"]) + "/" + str(sum_bikes) + " bikes available", "icon": "citybike"}}
         features.append(station_geojson)
 
     stations_geojson = {"type": "FeatureCollection", "features": features}
