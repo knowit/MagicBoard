@@ -41,22 +41,35 @@ Module.register("MMM-entur", {
             latitude: this.config.position[1],
             max_distance: this.config.max_distance
         });
+
+        this.sendSocketNotification("GET_CITY_BIKE_DATA", {
+            longitude: this.config.position[0],
+            latitude: this.config.position[1],
+            max_distance: this.config.max_distance
+        });
     },
 
     socketNotificationReceived(notification, payload) {
         if (notification === "ENTUR_DATA") {
             this.data = payload;
-            //this.addCitybikesToMap();
             this.addPublicTransportToMap();
+
+        }
+
+        if (notification === "CITY_BIKE_DATA") {
+            this.data = payload;
+            this.addCitybikesToMap();
         }
     },
 
-    addImages: function(){
+
+
+    addImages: function () {
         const self = this;
         const path = 'modules/MMM-entur/img/';
-        const pictureList = ["bus.png", "citybike.png", "metro.png", "mixed.png", "tram.png", "water.png"];
+        const pictureList = ["bus.png", "citybike.png", "metro.png", "mixed.png", "tram.png", "water.png", "rail.png"];
 
-        for (const pic in pictureList){
+        for (const pic in pictureList) {
             self.map.loadImage(path + pictureList[pic], function (error, image) {
                 if (error) throw error;
                 self.map.addImage(pictureList[pic].substring(0, pictureList[pic].length - 4), image);
@@ -64,7 +77,7 @@ Module.register("MMM-entur", {
         }
     },
 
-    addPublicTransportToMap: function() {
+    addPublicTransportToMap: function () {
         var geojson = this.data["stations"];
         this.map.addLayer({
             "id": "publicTransportStations",

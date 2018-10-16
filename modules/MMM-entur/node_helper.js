@@ -12,9 +12,21 @@ module.exports = NodeHelper.create({
 
         if (notification === "GET_ENTUR_DATA") {
             let pyshell = new PythonShell("modules/" + this.name + "/scripts/public_transport.py", { mode: "json", args: [payload.longitude, payload.latitude, payload.max_distance]});
-
             pyshell.on("message", function (message) {
                 self.sendSocketNotification("ENTUR_DATA", message)
+            });
+
+            pyshell.end(function (err) {
+                if (err) throw err;
+            });
+        }
+
+
+        if (notification === "GET_CITY_BIKE_DATA") {
+            let pyshell = new PythonShell("modules/" + this.name + "/scripts/citybike.py", { mode: "json", args: [payload.longitude, payload.latitude, payload.max_distance]});
+
+            pyshell.on("message", function (message) {
+                self.sendSocketNotification("CITY_BIKE_DATA", message)
             });
 
             pyshell.end(function (err) {

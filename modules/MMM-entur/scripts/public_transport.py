@@ -107,9 +107,11 @@ def create_geojson(stations):
 
 
 
-latitude, longitude = 59.916674, 10.762450
+longitude = sys.argv[1]
+latitude = sys.argv[2]
+max_distance = float(sys.argv[3])
 
-max_distance = 1000
+
 
 origin = geopy.Point(latitude, longitude)
 
