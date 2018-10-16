@@ -1,7 +1,6 @@
 import geopy.distance
 from geopy.distance import VincentyDistance
 import sys
-import graphene
 import socket
 import json
 from six.moves import urllib

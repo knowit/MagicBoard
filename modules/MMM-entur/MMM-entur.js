@@ -31,28 +31,62 @@ Module.register("MMM-entur", {
 
     start: function () {
         console.log(this.translate("STARTINGMODULE") + ": " + this.name);
+
+        this.updateDom();
+
+        this.addImages();
+
+        this.sendSocketNotification("GET_ENTUR_DATA", {
+            longitude: this.config.position[0],
+            latitude: this.config.position[1],
+            max_distance: this.config.max_distance
+        });
     },
 
     socketNotificationReceived(notification, payload) {
         if (notification === "ENTUR_DATA") {
             this.data = payload;
-            this.addCitybikesToMap();
-
+            //this.addCitybikesToMap();
+            this.addPublicTransportToMap();
         }
     },
 
     addImages: function(){
         const self = this;
-        const pict = 'modules/MMM-entur/img/';
+        const path = 'modules/MMM-entur/img/';
         const pictureList = ["bus.png", "citybike.png", "metro.png", "mixed.png", "tram.png", "water.png"];
 
-        for (const tempPicture in pictureList){
-
-            self.map.loadImage(pict+pictureList[tempPicture], function (error, image) {
+        for (const pic in pictureList){
+            self.map.loadImage(path + pictureList[pic], function (error, image) {
                 if (error) throw error;
-                self.map.addImage(pictureList[tempPicture].substring(-4), image);
+                self.map.addImage(pictureList[pic].substring(0, pictureList[pic].length - 4), image);
             });
         }
+    },
+
+    addPublicTransportToMap: function() {
+        var geojson = this.data["stations"];
+        this.map.addLayer({
+            "id": "publicTransportStations",
+            "type": "symbol",
+            "source": {
+                "type": "geojson",
+                "data": geojson
+            },
+            "layout": {
+                "icon-image": "{icon}",
+                "text-field": "{title}",
+                "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+                "text-offset": [0, 0.6],
+                "text-anchor": "top",
+                "icon-size": 0.05
+            },
+            "paint": {
+                "text-color": "#fff",
+                "text-halo-width": 1,
+                "text-halo-color": "#000"
+            }
+        });
     },
 
     addCitybikesToMap: function () {
@@ -103,14 +137,6 @@ Module.register("MMM-entur", {
         setTimeout(function () {
             self.map.resize();
         }, 1000);
-
-        this.addImages();
-
-        this.sendSocketNotification("GET_ENTUR_DATA", {
-            longitude: this.config.position[0],
-            latitude: this.config.position[1],
-            max_distance: this.config.max_distance
-        });
 
         return wrapper;
     }
