@@ -21,7 +21,7 @@ import glob
 
 class ToolsConfig (CommonConfig):
     # File to save and load face recognizer model.
-    TRAINING_FILE = 'training.xml'
+    TRAINING_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')) + '/training.xml'
     TRAINING_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')) + '/training_data/'
     POSITIVE_THRESHOLD=80
     
@@ -92,7 +92,11 @@ class ToolsConfig (CommonConfig):
        # except Exception as e:
             #print(e)
         import lib.common.webcam as webcam
-        return webcam.OpenCVCapture(device_id=0)
+        try:
+            camera = webcam.OpenCVCapture(device_id=0)
+            return camera
+        except Exception as e:
+            print("Webcam error", e)
 
     @classmethod
     def model(cls):

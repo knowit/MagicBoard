@@ -10,6 +10,7 @@ Based on work by Paul-Vincent Roll (Copyright 2016) (MIT License)
 # to install builtins run `pip install future` 
 from builtins import input
 
+import json
 import cv2
 import numpy as np
 import os
@@ -74,7 +75,7 @@ class ToolsTrain:
         model.write(ToolsConfig.TRAINING_FILE)
         print('Training data saved to', ToolsConfig.TRAINING_FILE)
         print('')
-        print("Please add or update (if you added new people not just new images) " + str(imageDirs) + " inside config.js (mirror module) or config.py (model tester). You can change the names to whatever you want, just keep the same order and you'll be fine.")
+        print(json.dumps({ "users": imageDirs }))
 
 
 

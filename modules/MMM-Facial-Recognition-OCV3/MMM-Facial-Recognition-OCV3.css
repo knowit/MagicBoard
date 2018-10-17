@@ -20,23 +20,102 @@
 	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
-/* Modal Content/Box */
-.modal-content {
+.modal-box {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
 	background-color: #fefefe;
 	padding: 20px;
-	border: 1px solid #888;
 	width: 50vw; /* Could be more or less, depending on screen size */
-	height: 50vw;
+}
+
+/* Modal Content/Box */
+.modal-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 20px;
+}
+
+.modal-input {
+	padding: 12px 24px;
+	font-size: 24px;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 .modal-title {
 	color: #000;
 	font-size: 28px;
+	margin: 0;
 }
 
-.modal-message {
+.modal-description {
 	color: #000;
 	font-size: 20px;
+	text-align: center;
+}
+
+.modal-button {
+	position: relative;
+
+	display: block;
+	margin: 30px auto;
+	padding: 12px 24px;
+	overflow: hidden;
+
+	border-width: 0;
+	outline: none;
+	border-radius: 2px;
+
+	color: #fff;
+	font-size: 18px;
+	background-color: rgb(51, 37, 85);
+}
+
+.center {
+	align-self: center;
+	font-size: 16px;
+}
+
+.modal-cancel {
+	position: relative;
+
+	display: block;
+	margin: 30px auto;
+	padding: 12px 24px;
+	overflow: hidden;
+
+	outline: none;
+	border-radius: 2px;
+
+	color: rgb(51, 37, 85);
+	font-size: 18px;
+	border: 2px solid rgb(51, 37, 85);
+	background-color: #fff;
+}
+
+.modal-cancel:hover,
+.modal-cancel:target,
+.modal-cancel:focus {
+	color: #fff;
+	background-color: rgba(51, 37, 85, 0.6);
+}
+
+.modal-form {
+	width: 100%;
+}
+
+.modal-error {
+	display: none;
+	color: red;
+	font-size: 18px;
+}
+
+.modal-button:hover,
+.modal-button:target,
+.modal-button:focus {
+	background-color: rgba(51, 37, 85, 0.8);
 }
 
 /* The Close Button */
@@ -52,4 +131,22 @@
 	color: black;
 	text-decoration: none;
 	cursor: pointer;
+}
+
+.loader {
+	border: 16px solid #f3f3f3; /* Light grey */
+	border-top: 16px solid #3498db; /* Blue */
+	border-radius: 50%;
+	width: 120px;
+	height: 120px;
+	animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 }

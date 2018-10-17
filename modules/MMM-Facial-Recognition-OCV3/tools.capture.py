@@ -13,12 +13,7 @@ from lib.tools.config import ToolsConfig
 # to install builtins run `pip install future` 
 from builtins import input
 
-print("What do you want to do?")
-print("[1] Capture training images from webcam")
-print("")
-print("Enter the name of the person you want to capture or convert images for.")
 capName = sys.argv[1]
-print("capname", capName)
 capture = ToolsCapture(capName)
 print("Images will be placed in " + ToolsConfig.TRAINING_DIR + capName)
 

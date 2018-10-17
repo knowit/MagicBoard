@@ -1,4 +1,6 @@
 "use strict";
+const { readdirSync } = require("fs");
+const rimraf = require("rimraf");
 const NodeHelper = require("node_helper");
 
 const PythonShell = require("python-shell");
@@ -11,7 +13,7 @@ module.exports = NodeHelper.create({
 		if (notification === "CONFIG") {
 			this.config = payload;
 		} else if (notification === "FACIAL_CAMERA_CAPTURE") {
-			console.log(this.name, "INITIALIZE_CAMERA_CAPTURE", payload);
+			var self = this;
 			const pythonCapture = new PythonShell(
 				"modules/" + this.name + "/tools.capture.py",
 				{
@@ -21,21 +23,39 @@ module.exports = NodeHelper.create({
 			);
 
 			pythonCapture.on("message", function(message) {
-				console.log("*MESSAGE*", message);
+				console.log(message);
 			});
 
 			pythonCapture.end(function(err) {
 				if (err) throw err;
 				console.log("[" + this.name + "] " + "finished running...");
+				self.sendSocketNotification("FINISHED_TAKING_PICTURE");
+			});
+		} else if (notification === "TRAIN_MODEL") {
+			var self = this;
+			const pythonTrain = new PythonShell(
+				"modules/" + this.name + "/tools.train.py",
+			);
+
+			pythonTrain.on("message", function(message) {
+				console.log(message);
+			});
+
+			pythonTrain.end(function(err) {
+				if (err) throw err;
+				console.log("[" + self.name + "] " + "finished running...");
+				self.sendSocketNotification("FINISHED_TRAINING_MODEL");
 			});
 		} else if (notification === "FACIAL_RECOGNITION_TOGGLE") {
 			if (!pythonRunning) {
-				console.log(this.name, "FACIAL_RECOGNITION_START");
+				const self = this;
+				const users = readdirSync(__dirname + "/training_data");
+				this.config = Object.assign(this.config, { users });
 				pyshell = new PythonShell(
 					"modules/" + this.name + "/lib/mm/facerecognition.py",
 					{
 						mode: "json",
-						args: [JSON.stringify(this.config)],
+						args: [JSON.stringify(self.config)],
 					},
 				);
 				pythonRunning = true;
@@ -45,6 +65,18 @@ module.exports = NodeHelper.create({
 				pythonRunning = false;
 				this.pythonStop();
 			}
+		} else if (notification === "GET_USERS") {
+			const users = readdirSync(__dirname + "/training_data");
+			const self = this;
+			self.sendSocketNotification("USER_RETRIEVED", users);
+		} else if (notification === "GET_USERS_AND_START") {
+			const users = readdirSync(__dirname + "/training_data");
+			const self = this;
+			self.sendSocketNotification("USER_RETRIEVED_AND_START", users);
+		} else if (notification === "REMOVE_USER") {
+			rimraf(`${__dirname}/training_data/${payload}`, () =>
+				console.log("Successfully deleted", payload),
+			);
 		}
 	},
 

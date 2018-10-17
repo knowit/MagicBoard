@@ -21,7 +21,7 @@ from lib.tools.config import ToolsConfig
 from face import FaceDetection
 
 class ToolsCapture:
-    def __init__(self, capName=None, captureAmount=12):
+    def __init__(self, capName=None, captureAmount=20):
         self.face = ToolsConfig.getFaceDetection()
         self.captureName = capName
         self.captureAmount = captureAmount
@@ -29,12 +29,8 @@ class ToolsCapture:
     def capture(self):
         toolsConfig = ToolsConfig(self.captureName)
         camera = toolsConfig.getCamera()
-        print('Capturing positive training images.')
-        print('Press enter to capture an image.')
-        print('Press Ctrl-C to quit.')
         for x in range(self.captureAmount):
             try:
-                print('Capturing image...')
                 image = camera.read()
                 # Convert image to grayscale.
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
@@ -53,7 +49,7 @@ class ToolsCapture:
                 # Save image to file.
                 filename, count = toolsConfig.getNewCaptureFile()
                 cv2.imwrite(filename, crop)
-                sleep(0.5) #sleep for half a second
+                sleep(0.3) #sleep for half a second
                 print('Found face and wrote training image', filename)
             except KeyboardInterrupt:
                 camera.stop()
