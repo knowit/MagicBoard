@@ -6,6 +6,13 @@
 	justify-content: space-around;
 }
 
+.MMM-entur .lines {
+    position: relative;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: scroll;
+}
+
 .mapboxgl-popup-close-button {
 	display: none;
 }

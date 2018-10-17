@@ -6,8 +6,8 @@ from six.moves import urllib
 
 HEADERS = {'Accept': 'application/json',
            'Content-Type': 'application/json',
-           'User-Agent': 'python-code-example-' + socket.gethostname(),
-           'ET-Client-Name': 'python-code-example-' + socket.gethostname(),
+           'User-Agent': 'magicboard-' + socket.gethostname(),
+           'ET-Client-Name': 'magicboard-' + socket.gethostname(),
            'ET-Client-ID': socket.gethostname()}
 
 GRAPHQL_ENDPOINT = "https://api.entur.org/journeyplanner/2.0/index/graphql"
@@ -55,10 +55,6 @@ def find_close_stations():
     longitude = sys.argv[1]
     latitude = sys.argv[2]
     max_distance = float(sys.argv[3])
-
-    #longitude = 10.7602077
-    #latitude = 59.9165606
-    #max_distance = 500
 
     origin = geopy.Point(latitude, longitude)
 

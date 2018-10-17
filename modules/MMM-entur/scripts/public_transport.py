@@ -7,8 +7,8 @@ from six.moves import urllib
 
 HEADERS = {'Accept': 'application/json',
            'Content-Type': 'application/json',
-           'User-Agent': 'python-code-example-' + socket.gethostname(),
-           'ET-Client-Name': 'python-code-example-' + socket.gethostname(),
+           'User-Agent': 'magicboard-' + socket.gethostname(),
+           'ET-Client-Name': 'magicboard-' + socket.gethostname(),
            'ET-Client-ID': socket.gethostname()}
 
 GRAPHQL_ENDPOINT = "https://api.entur.org/journeyplanner/2.0/index/graphql"
@@ -23,7 +23,7 @@ def to_node(type, message):
     sys.stdout.flush()
 
 
-def send_graphql_query(min_coordinates, max_coordinates):
+def send_graphql_query_stations(min_coordinates, max_coordinates):
     query = """
     {
         stopPlacesByBbox(
@@ -56,6 +56,7 @@ def send_graphql_query(min_coordinates, max_coordinates):
                         id
                         name
                         transportMode
+                        publicCode
                         }
                     }
                 }
@@ -63,8 +64,6 @@ def send_graphql_query(min_coordinates, max_coordinates):
         }
     }
     """
-
-
     data = {'query': query}
 
     req = urllib.request.Request(GRAPHQL_ENDPOINT, json.dumps(data).encode('utf-8'), HEADERS)
@@ -80,44 +79,51 @@ def create_geojson(stations):
     for station in stations:
         transport_mode_list = []
 
-        if(station["estimatedCalls"] == []):
+        if not station["estimatedCalls"]:
             continue
 
+        lines = []
 
         for estimated_calls in station["estimatedCalls"]:
+
+            expected_arrival = estimated_calls["expectedArrivalTime"]
+            line_name = estimated_calls["serviceJourney"]["journeyPattern"]["line"]["name"]
             transport_mode = estimated_calls["serviceJourney"]["journeyPattern"]["line"]["transportMode"]
+            public_code = estimated_calls["serviceJourney"]["journeyPattern"]["line"]["publicCode"]
+
+            lines.append({"name": line_name, "expected_arrival": expected_arrival, "transport_mode": transport_mode, "public_code": public_code})
+
             if transport_mode not in transport_mode_list:
                 transport_mode_list.append(transport_mode)
 
-        if(len(transport_mode_list) > 1):
+        if len(transport_mode_list) > 1:
             icon = "mixed"
-        elif(len(transport_mode_list) == 1):
+
+        elif len(transport_mode_list) == 1:
             icon = transport_mode_list[0]
 
         else:
             icon = None
 
-        station_geojson = {"type": "Feature", "geometry": {"type": "Point", "coordinates": [station["longitude"], station["latitude"]]}, "properties": {"title": station["name"], "icon": icon}}
+        station_geojson = {"type": "Feature", "geometry": {"type": "Point", "coordinates": [station["longitude"], station["latitude"]]}, "properties": {"title": station["name"], "icon": icon, "lines": lines}}
 
         features.append(station_geojson)
 
     stations_geojson = {"type": "FeatureCollection", "features": features}
     to_node("stations", stations_geojson)
+    # print("stations", stations_geojson)
     return features
-
 
 
 longitude = sys.argv[1]
 latitude = sys.argv[2]
 max_distance = float(sys.argv[3])
 
-
-
 origin = geopy.Point(latitude, longitude)
 
 min_coordinates = VincentyDistance(meters=max_distance).destination(origin, 225)
 max_coordinates = VincentyDistance(meters=max_distance).destination(origin, 45)
-response = json.loads(send_graphql_query(min_coordinates, max_coordinates))
+response = json.loads(send_graphql_query_stations(min_coordinates, max_coordinates))
 
 
 geojson = create_geojson(response)
