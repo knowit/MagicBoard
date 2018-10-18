@@ -11,7 +11,7 @@ Module.register("MMM-entur", {
         zoom: 16,
         mapboxAccessToken: "",
         updateInterval: 1000 * 60 * 2,
-        publicTransportLineRotationSpeed: 40
+        publicTransportLineRotationSpeed: 20
 
     },
 
@@ -20,7 +20,7 @@ Module.register("MMM-entur", {
     },
 
     getScripts: function () {
-        return ["https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js"];
+        return ["https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js", "enturBoard.js"];
     },
 
     getTranslations: function () {
@@ -34,14 +34,17 @@ Module.register("MMM-entur", {
         console.log(this.translate("STARTINGMODULE") + ": " + this.name);
 
         this.updateDom();
-
         this.addImages();
 
-        this.sendSocketNotification("GET_ENTUR_DATA", {
-            longitude: this.config.position[0],
-            latitude: this.config.position[1],
-            max_distance: this.config.max_distance
-        });
+        this.popups = [];
+        this.enturBoards = [];
+        this.fetchPublicTransportData();
+
+
+        /*const self = this;
+        setInterval(function () {
+            self.fetchPublicTransportData()
+        }, 1000 * 30);*/
 
         /*this.sendSocketNotification("GET_CITY_BIKE_DATA", {
             longitude: this.config.position[0],
@@ -50,12 +53,19 @@ Module.register("MMM-entur", {
         });*/
     },
 
+    fetchPublicTransportData: function () {
+        this.sendSocketNotification("GET_ENTUR_DATA", {
+            longitude: this.config.position[0],
+            latitude: this.config.position[1],
+            max_distance: this.config.max_distance
+        })
+    },
+
     socketNotificationReceived(notification, payload) {
         if (notification === "ENTUR_DATA") {
             this.data = payload;
-            this.addPublicTransportToMap();
 
-            console.log(payload);
+            this.addPublicTransportToMap();
 
         }
 
@@ -79,80 +89,37 @@ Module.register("MMM-entur", {
     },
 
     addPublicTransportToMap: function () {
-        this.popups = [];
-        const geojson = this.data["stations"];
-        const features = geojson["features"];
-        const icon_size = 20;
+        const self = this;
+        const features = this.data["stations"]["features"];
 
         Object.entries(features).forEach(([key, value]) => {
-            const self = this;
-            const coordinates = value["geometry"]["coordinates"];
-            const station_name = value["properties"]["title"];
-            const lines = value["properties"]["lines"];
-
-            let wrapper = document.createElement("div");
-            wrapper.innerText = station_name;
-
-            let next_line_wrapper = document.createElement("tr");
-            next_line_wrapper.className = "lines";
-
-            let lines_div = document.createElement("div");
-            lines_div.className = "lines";
-
-            let lines_wrapper = document.createElement("tr");
-            lines_wrapper.style.position = "relative";
-
-            let line_info_wrapper_array = [];
-
-            for (let line in lines) {
-                const transport_mode = lines[line]["transport_mode"];
-                let icon = document.createElement("img");
-                icon.src = "modules/MMM-entur/img/" + transport_mode + "_black.png";
-                icon.style.width = icon_size + "px";
-                icon.style.height = icon_size + "px";
-
-                const line_info = lines[line]["public_code"] + " " + lines[line]["name"];
-                let line_info_wrapper = document.createElement("div");
-                line_info_wrapper.innerText = line_info;
-                line_info_wrapper.style.marginRight = "20px";
-
-                if (line == 0) {
-                    next_line_wrapper.appendChild(icon);
-                    next_line_wrapper.appendChild(line_info_wrapper);
-                    wrapper.appendChild(next_line_wrapper);
-                }
-                else{
-                    line_info_wrapper_array.push(line_info_wrapper);
-                    lines_wrapper.appendChild(icon);
-                    lines_wrapper.appendChild(line_info_wrapper);
-                }
-            }
-
-            lines_div.appendChild(lines_wrapper);
-            wrapper.appendChild(lines_div);
-
-            this.popups.push(new mapboxgl.Popup({closeOnClick: false})
-                .setLngLat(coordinates)
-                .setDOMContent(wrapper)
-                .addTo(self.map));
-
-            let total_width = 0;
-            for (var index in line_info_wrapper_array){
-                total_width += line_info_wrapper_array[index].offsetWidth + icon_size;
-            }
+            let enturBoard = new EnturBoard(this.config.publicTransportLineRotationSpeed);
+            enturBoard.update(key, value);
+            let popup = new mapboxgl.Popup({closeOnClick: false})
+                .setLngLat(enturBoard.getCoordinates())
+                .setDOMContent(enturBoard.getWrapper())
+                .addTo(self.map);
 
 
-            let pos = 0;
-            const id = setInterval(frame, this.config.publicTransportLineRotationSpeed);
-            function frame() {
-                if (pos >= total_width) {
-                    pos = 0;
-                } else {
-                    pos++;
-                    lines_wrapper.style.left = -pos + 'px';
-                }
-            }
+            this.enturBoards.push(enturBoard);
+            this.popups.push(popup);
+
         });
+    },
+
+    updatePublicTransportMap: function () {
+        const features = this.data["stations"]["features"];
+
+        Object.entries(features).forEach(([key, value]) => {
+            this.enturBoards[key].update(key, value);
+        });
+    },
+
+    removePublicTransportLayer: function () {
+        for (let index in this.popups) {
+            this.popups[index].remove();
+        }
+        this.popups = [];
     },
 
     addCitybikesToMap: function () {
@@ -179,12 +146,6 @@ Module.register("MMM-entur", {
             }
         });
 
-    },
-
-    removePublicTransportLayer: function () {
-        for(let index in this.popups){
-            this.popups[index].remove();
-        }
     },
 
     getDom: function () {
