@@ -280,7 +280,8 @@ Module.register("calendar", {
 				eventWrapper.appendChild(titleWrapper);
 			} else {
 				var timeWrapper = document.createElement("td");
-				//console.log(event.today);
+                timeWrapper.className = "time small light";
+                timeWrapper.align = "right";
 				var now = new Date();
 				// Define second, minute, hour, and day variables
 				var oneSecond = 1000; // 1,000 milliseconds
@@ -289,10 +290,10 @@ Module.register("calendar", {
 				var oneDay = oneHour * 24;
 				if (event.fullDayEvent) {
 					if (event.today) {
+                        timeWrapper.classList.add("blink");
 						timeWrapper.innerHTML = this.capFirst(
 							this.translate("TODAY"),
 						);
-						timeWrapper.className = "blink"
 					} else if (
 						event.startDate - now < oneDay &&
 						event.startDate - now > 0
@@ -356,7 +357,8 @@ Module.register("calendar", {
 								this.config.getRelative * oneHour
 							) {
 								// If event is within 6 hour, display 'in xxx' time format or moment.fromNow()
-								timeWrapper.innerHTML = this.capFirst(
+                                timeWrapper.classList.add("blink");
+                                timeWrapper.innerHTML = this.capFirst(
 									moment(event.startDate, "x").fromNow(),
 								);
 							} else {
@@ -410,10 +412,6 @@ Module.register("calendar", {
 						);
 					}
 				}
-				//timeWrapper.innerHTML += ' - '+ moment(event.startDate,'x').format('lll');
-				//console.log(event);
-				timeWrapper.className = "time small light";
-				//timeWrapper.align = "right";
 				eventWrapper.appendChild(timeWrapper);
 			}
 

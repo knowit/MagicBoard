@@ -1,9 +1,9 @@
 .calendar .symbol {
-	width: 10%;
+	width: 5%;
 }
 
 .calendar .titlelocation {
-	width: 70%;
+	width: 75%;
 }
 
 .calendar .time {
@@ -13,7 +13,7 @@
 
 .calendar .location {
 	font-size: 1vw;
-    margin-top: -10px;
+    margin-top: -20px;
 }
 
 .calendar .title {
@@ -21,11 +21,9 @@
 }
 
 .blink {
-    animation: blinker 1s step-start infinite;
+    animation: blinker 1.5s step-start infinite;
 }
 
 @keyframes blinker {
-    50% {
-        opacity: 0;
-    }
+    50% { opacity: 0; }
 }
