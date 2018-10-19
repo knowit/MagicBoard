@@ -16,8 +16,9 @@ All config values are default and only needs to be added if changed.
         max_distance: 500,
         zoom: 16,
         mapboxAccessToken: "",
-        updateInterval: 1000 * 60,
-        publicTransportLineRotationSpeed: 40
+        citybikeUpdateInterval: 1000 * 60,
+        publicTransportUpdateInterval: 1000 * 60,
+        publicTransportLineRotationSpeed: 20
     }
 }
 ```

@@ -1,6 +1,5 @@
 /* Magic Mirror
  * Module: entur
- * MIT Licensed.
  */
 
 Module.register("MMM-entur", {
@@ -10,9 +9,9 @@ Module.register("MMM-entur", {
         max_distance: 500,
         zoom: 16,
         mapboxAccessToken: "",
-        updateInterval: 1000 * 60 * 2,
+        citybikeUpdateInterval: 1000 * 60,
+        publicTransportUpdateInterval: 1000 * 60,
         publicTransportLineRotationSpeed: 20
-
     },
 
     getStyles: function () {
@@ -20,7 +19,7 @@ Module.register("MMM-entur", {
     },
 
     getScripts: function () {
-        return ["https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js", "enturBoard.js"];
+        return ["https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js", "EnturBoard.js"];
     },
 
     getTranslations: function () {
@@ -32,25 +31,21 @@ Module.register("MMM-entur", {
 
     start: function () {
         console.log(this.translate("STARTINGMODULE") + ": " + this.name);
-
         this.updateDom();
         this.addImages();
 
         this.popups = [];
         this.enturBoards = [];
         this.fetchPublicTransportData();
+        this.fetchCitybikeData();
+    },
 
-
-        const self = this;
-        setInterval(function () {
-            self.fetchPublicTransportData()
-        }, 1000 * 30);
-
-        /*this.sendSocketNotification("GET_CITY_BIKE_DATA", {
+    fetchCitybikeData: function () {
+        this.sendSocketNotification("GET_CITY_BIKE_DATA", {
             longitude: this.config.position[0],
             latitude: this.config.position[1],
             max_distance: this.config.max_distance
-        });*/
+        })
     },
 
     fetchPublicTransportData: function () {
@@ -67,8 +62,7 @@ Module.register("MMM-entur", {
         }
 
         if (notification === "CITY_BIKE_DATA") {
-            this.data = payload;
-            this.addCitybikesToMap();
+            this.map.getLayer('citybikeStations') === undefined ? this.addCitybikesToMap(payload) : this.updateCitybikeMap(payload);
         }
     },
 
@@ -86,6 +80,10 @@ Module.register("MMM-entur", {
     },
 
     addPublicTransportToMap: function (enturData) {
+        this.publicTransportInterval = setInterval(function () {
+            self.fetchPublicTransportData()
+        }, this.config.publicTransportUpdateInterval);
+
         const self = this;
         const features = enturData["stations"]["features"];
 
@@ -104,12 +102,13 @@ Module.register("MMM-entur", {
     },
 
     updatePublicTransportMap: function (enturData) {
-        console.log("===== UPDATING");
         const features = enturData["stations"]["features"];
         Object.entries(features).forEach(([key, value]) => this.enturBoards[key].update(key, value));
     },
 
     removePublicTransportLayer: function () {
+        clearInterval(this.publicTransportInterval);
+
         this.popups.forEach(function (popup) {
             popup.remove();
         });
@@ -118,14 +117,14 @@ Module.register("MMM-entur", {
         this.enturBoards = [];
     },
 
-    addCitybikesToMap: function () {
-        const geojson = this.data["stations"];
+    addCitybikesToMap: function (geojson) {
+        const stations = geojson["stations"];
         this.map.addLayer({
             "id": "citybikeStations",
             "type": "symbol",
             "source": {
                 "type": "geojson",
-                "data": geojson
+                "data": stations
             },
             "layout": {
                 "icon-image": "{icon}",
@@ -142,6 +141,24 @@ Module.register("MMM-entur", {
             }
         });
 
+        this.showCitybikeLayer();
+    },
+
+    updateCitybikeMap: function (geojson) {
+        console.log("UPDATING CITYBIKE DATA");
+        this.map.getSource('citybikeStations').setData(geojson["stations"]);
+    },
+
+    hideCitybikeLayer: function () {
+        clearInterval(this.citybikeInterval);
+        this.map.setLayoutProperty('citybikeStations', 'visibility', 'none');
+    },
+
+    showCitybikeLayer: function () {
+        this.citybikeInterval = setInterval(function () {
+            self.fetchCitybikeData();
+        }, this.config.citybikeUpdateInterval);
+        this.map.setLayoutProperty('citybikeStations', 'visibility', 'visible');
     },
 
     getDom: function () {
@@ -169,5 +186,4 @@ Module.register("MMM-entur", {
 
         return wrapper;
     }
-})
-;
+});
