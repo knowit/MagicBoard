@@ -2,11 +2,30 @@
 	width: 10%;
 }
 
-.calendar .title {
-	width: 60%;
+.calendar .titlelocation {
+	width: 70%;
 }
 
 .calendar .time {
-	width: 30%;
+	width: 20%;
 	text-align: right;
+}
+
+.calendar .location {
+	font-size: 1vw;
+    margin-top: -10px;
+}
+
+.calendar .title {
+    font-size: 1.5vw;
+}
+
+.blink {
+    animation: blinker 1s step-start infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
 }

@@ -1,96 +1,105 @@
 let EnturBoard = function (publicTransportLineRotationSpeed) {
-    let wrapper = document.createElement("div");
-    let linesWrapper = document.createElement("tr");
-    let lines = [];
-    let coordinates = [];
-    let iconSize = 20;
-    let marginSize = 20;
+        this.wrapper = document.createElement("div");
+        this.linesDiv = document.createElement("div");
+        this.nextLineWrapper = document.createElement("tr");
+        this.lines = [];
+        this.coordinates = [];
+        this.iconSize = 20;
+        this.marginSize = 20;
+        this.interval = null;
 
-    EnturBoard.prototype.update = function (key, geojson) {
-        const currentTime = new Date();
-        const stationName = geojson["properties"]["title"];
-        const linesJson = geojson["properties"]["lines"];
-        coordinates = geojson["geometry"]["coordinates"];
+        EnturBoard.prototype.init = function (key, geojson){
+            const stationName = geojson["properties"]["title"];
+            this.coordinates = geojson["geometry"]["coordinates"];
 
-        wrapper.className = "station-name";
-        wrapper.innerText = stationName;
+            this.wrapper.className = "station-name";
+            this.wrapper.innerText = stationName;
 
-        let nextLineWrapper = document.createElement("tr");
-        nextLineWrapper.className = "lines";
+            this.nextLineWrapper.className = "lines";
+            this.linesDiv.className = "lines";
 
-        let linesDiv = document.createElement("div");
-        linesDiv.className = "lines";
+            this.update(key, geojson);
+        };
 
-        linesWrapper.style.position = "relative";
 
-        for (let line in linesJson) {
-            const transportMode = linesJson[line]["transport_mode"];
-            let icon = document.createElement("img");
-            icon.src = "modules/MMM-entur/img/" + transportMode + "_black.png";
-            icon.style.width = iconSize + "px";
-            icon.style.height = iconSize + "px";
-
-            const expectedArrival = new Date(linesJson[line]["expected_arrival"]);
-            const timeDifferenceInMinutes = Math.floor(((expectedArrival - currentTime) / 1000) / 60);
-
-            let lineInfo = linesJson[line]["public_code"] + " " + linesJson[line]["name"];
-            if (timeDifferenceInMinutes === 0) {
-                lineInfo += ": nå";
+        EnturBoard.prototype.update = function (key, geojson) {
+            while (this.linesDiv.firstChild) {
+                this.linesDiv.removeChild(this.linesDiv.firstChild);
             }
-            else {
-                lineInfo += ": " + timeDifferenceInMinutes + " min"
+            while (this.nextLineWrapper.firstChild) {
+                this.nextLineWrapper.removeChild(this.nextLineWrapper.firstChild);
             }
-            let lineInfoWrapper = document.createElement("div");
-            lineInfoWrapper.innerText = lineInfo;
-            lineInfoWrapper.style.marginRight = marginSize + "px";
 
-            if (line == 0) {
-                nextLineWrapper.appendChild(icon);
-                nextLineWrapper.appendChild(lineInfoWrapper);
-                wrapper.appendChild(nextLineWrapper);
-            }
-            else {
-                lines.push(lineInfoWrapper);
-                linesWrapper.appendChild(icon);
-                linesWrapper.appendChild(lineInfoWrapper);
-            }
-        }
+            const self = this;
+            const currentTime = new Date();
+            const linesJson = geojson["properties"]["lines"];
 
-        linesDiv.appendChild(linesWrapper);
-        wrapper.appendChild(linesDiv);
+            let linesWrapper = document.createElement("tr");
+            linesWrapper.style.position = "relative";
 
-        let rotationSleep = 50;
-        let pos = 0;
-        const self = this;
-        setInterval(function () {
-            if (pos - rotationSleep >= self.getWidth()) {
-                pos = 0;
-                linesWrapper.style.left = pos + 'px';
-            } else {
-                pos += 0.5;
-                if (pos > rotationSleep) {
-                    linesWrapper.style.left = -pos + 'px';
+            linesJson.forEach(function(line) {
+                const transportMode = line["transport_mode"];
+                let icon = document.createElement("img");
+                icon.src = "modules/MMM-entur/img/" + transportMode + "_black.png";
+                icon.style.width = self.iconSize + "px";
+                icon.style.height = self.iconSize + "px";
+
+                const expectedArrival = new Date(line["expected_arrival"]);
+                const timeDifferenceInMinutes = Math.floor(((expectedArrival - currentTime) / 1000) / 60);
+
+                let lineInfo = line["public_code"] + " " + line["name"] + ": ";
+                lineInfo += (timeDifferenceInMinutes === 0) ? "nå" : timeDifferenceInMinutes + " min";
+
+                let lineInfoWrapper = document.createElement("div");
+                lineInfoWrapper.innerText = lineInfo;
+                lineInfoWrapper.style.marginRight = self.marginSize + "px";
+
+                if (self.nextLineWrapper.childElementCount === 0) {
+                    self.nextLineWrapper.appendChild(icon);
+                    self.nextLineWrapper.appendChild(lineInfoWrapper);
+                    self.wrapper.appendChild(self.nextLineWrapper);
                 }
-            }
-        }, publicTransportLineRotationSpeed);
+                else {
+                    linesWrapper.appendChild(icon);
+                    linesWrapper.appendChild(lineInfoWrapper);
+                    self.lines.push(lineInfoWrapper);
+                }
+            });
 
-    };
+            this.linesDiv.appendChild(linesWrapper);
+            this.wrapper.appendChild(this.linesDiv);
 
+            let rotationSleep = 50;
+            let pos = 0;
+            let width = this.getWidth();
 
-    EnturBoard.prototype.getWidth = function () {
-        let totalWidth = 0;
-        for (let index in lines) {
-            totalWidth += iconSize + lines[index].offsetWidth + marginSize;
-        }
-        return totalWidth;
-    };
+            if(this.interval != null) clearInterval(this.interval);
+            this.interval = setInterval(function () {
+                if (pos - rotationSleep >= width) {
+                    pos = 0;
+                    linesWrapper.style.left = pos + 'px';
+                    width = self.getWidth();
+                } else {
+                    pos += 0.5;
+                    if (pos > rotationSleep) linesWrapper.style.left = -(pos - rotationSleep) + 'px';
 
-    EnturBoard.prototype.getWrapper = function(){
-        return wrapper;
-    };
+                }
+            }, publicTransportLineRotationSpeed);
+        };
 
-    EnturBoard.prototype.getCoordinates = function(){
-        return coordinates;
-    };
+        EnturBoard.prototype.getWidth = function () {
+            let totalWidth = 0;
+            for (let index in this.lines) totalWidth += this.iconSize + this.lines[index].offsetWidth + this.marginSize;
+            return totalWidth;
+        };
 
-};
+        EnturBoard.prototype.getWrapper = function () {
+            return this.wrapper;
+        };
+
+        EnturBoard.prototype.getCoordinates = function () {
+            return this.coordinates;
+        };
+
+    }
+;

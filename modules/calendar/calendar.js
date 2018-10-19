@@ -206,6 +206,11 @@ Module.register("calendar", {
 				eventWrapper.appendChild(blankCell);
 			}
 
+			//  Title and location
+            var titleLocationWrapper = document.createElement("tr");
+			titleLocationWrapper.className = "titlelocation column";
+
+
 			var titleWrapper = document.createElement("td"),
 				repeatingCountTitle = "";
 
@@ -227,10 +232,21 @@ Module.register("calendar", {
 				this.titleTransform(event.title) + repeatingCountTitle;
 
 			if (!this.config.colored) {
-				titleWrapper.className = "title small bright";
-			} else {
-				titleWrapper.className = "title";
+				titleWrapper.className = "title normal";
 			}
+
+            titleLocationWrapper.appendChild(titleWrapper);
+
+            if(event.location){
+                var locationWrapper = document.createElement("td");
+                locationWrapper.className = "location dimmed";
+                locationWrapper.align = "left";
+                locationWrapper.innerText = event.location;
+
+                titleLocationWrapper.appendChild(locationWrapper);
+            }
+
+            eventWrapper.appendChild(titleLocationWrapper);
 
 			if (this.config.timeFormat === "dateheaders") {
 				if (event.fullDayEvent) {
@@ -238,7 +254,7 @@ Module.register("calendar", {
 					titleWrapper.align = "left";
 				} else {
 					var timeWrapper = document.createElement("td");
-					timeWrapper.className = "time small light";
+					timeWrapper.className = "time small normal";
 					timeWrapper.align = "left";
 					timeWrapper.style.paddingLeft = "2px";
 					var timeFormatString = "";
@@ -259,15 +275,11 @@ Module.register("calendar", {
 					timeWrapper.innerHTML = moment(event.startDate, "x").format(
 						timeFormatString,
 					);
-					eventWrapper.appendChild(timeWrapper);
-					titleWrapper.align = "right";
 				}
 
 				eventWrapper.appendChild(titleWrapper);
 			} else {
 				var timeWrapper = document.createElement("td");
-
-				eventWrapper.appendChild(titleWrapper);
 				//console.log(event.today);
 				var now = new Date();
 				// Define second, minute, hour, and day variables
@@ -280,6 +292,7 @@ Module.register("calendar", {
 						timeWrapper.innerHTML = this.capFirst(
 							this.translate("TODAY"),
 						);
+						timeWrapper.className = "blink"
 					} else if (
 						event.startDate - now < oneDay &&
 						event.startDate - now > 0
@@ -400,6 +413,7 @@ Module.register("calendar", {
 				//timeWrapper.innerHTML += ' - '+ moment(event.startDate,'x').format('lll');
 				//console.log(event);
 				timeWrapper.className = "time small light";
+				//timeWrapper.align = "right";
 				eventWrapper.appendChild(timeWrapper);
 			}
 

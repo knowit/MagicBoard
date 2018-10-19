@@ -41,10 +41,10 @@ Module.register("MMM-entur", {
         this.fetchPublicTransportData();
 
 
-        /*const self = this;
+        const self = this;
         setInterval(function () {
             self.fetchPublicTransportData()
-        }, 1000 * 30);*/
+        }, 1000 * 30);
 
         /*this.sendSocketNotification("GET_CITY_BIKE_DATA", {
             longitude: this.config.position[0],
@@ -63,10 +63,7 @@ Module.register("MMM-entur", {
 
     socketNotificationReceived(notification, payload) {
         if (notification === "ENTUR_DATA") {
-            this.data = payload;
-
-            this.addPublicTransportToMap();
-
+            this.popups.length === 0 ? this.addPublicTransportToMap(payload) : this.updatePublicTransportMap(payload);
         }
 
         if (notification === "CITY_BIKE_DATA") {
@@ -80,21 +77,21 @@ Module.register("MMM-entur", {
         const path = 'modules/MMM-entur/img/';
         const pictureList = ["bus.png", "citybike.png", "metro.png", "mixed.png", "tram.png", "water.png", "rail.png"];
 
-        for (const pic in pictureList) {
-            self.map.loadImage(path + pictureList[pic], function (error, image) {
+        pictureList.forEach(function (picture) {
+            self.map.loadImage(path + picture, function (error, image) {
                 if (error) throw error;
-                self.map.addImage(pictureList[pic].substring(0, pictureList[pic].length - 4), image);
+                self.map.addImage(picture.substring(0, picture.length - 4), image);
             });
-        }
+        });
     },
 
-    addPublicTransportToMap: function () {
+    addPublicTransportToMap: function (enturData) {
         const self = this;
-        const features = this.data["stations"]["features"];
+        const features = enturData["stations"]["features"];
 
         Object.entries(features).forEach(([key, value]) => {
             let enturBoard = new EnturBoard(this.config.publicTransportLineRotationSpeed);
-            enturBoard.update(key, value);
+            enturBoard.init(key, value);
             let popup = new mapboxgl.Popup({closeOnClick: false})
                 .setLngLat(enturBoard.getCoordinates())
                 .setDOMContent(enturBoard.getWrapper())
@@ -103,23 +100,22 @@ Module.register("MMM-entur", {
 
             this.enturBoards.push(enturBoard);
             this.popups.push(popup);
-
         });
     },
 
-    updatePublicTransportMap: function () {
-        const features = this.data["stations"]["features"];
-
-        Object.entries(features).forEach(([key, value]) => {
-            this.enturBoards[key].update(key, value);
-        });
+    updatePublicTransportMap: function (enturData) {
+        console.log("===== UPDATING");
+        const features = enturData["stations"]["features"];
+        Object.entries(features).forEach(([key, value]) => this.enturBoards[key].update(key, value));
     },
 
     removePublicTransportLayer: function () {
-        for (let index in this.popups) {
-            this.popups[index].remove();
-        }
+        this.popups.forEach(function (popup) {
+            popup.remove();
+        });
+
         this.popups = [];
+        this.enturBoards = [];
     },
 
     addCitybikesToMap: function () {
