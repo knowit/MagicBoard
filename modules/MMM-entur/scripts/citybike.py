@@ -6,8 +6,8 @@ from six.moves import urllib
 
 HEADERS = {'Accept': 'application/json',
            'Content-Type': 'application/json',
-           'User-Agent': 'python-code-example-' + socket.gethostname(),
-           'ET-Client-Name': 'python-code-example-' + socket.gethostname(),
+           'User-Agent': 'magicboard-' + socket.gethostname(),
+           'ET-Client-Name': 'magicboard-' + socket.gethostname(),
            'ET-Client-ID': socket.gethostname()}
 
 GRAPHQL_ENDPOINT = "https://api.entur.org/journeyplanner/2.0/index/graphql"
@@ -56,10 +56,6 @@ def find_close_stations():
     latitude = sys.argv[2]
     max_distance = float(sys.argv[3])
 
-    #longitude = 10.7602077
-    #latitude = 59.9165606
-    #max_distance = 500
-
     origin = geopy.Point(latitude, longitude)
 
     min_coordinates = VincentyDistance(meters=max_distance).destination(origin, 225)
@@ -75,7 +71,9 @@ def create_geojson():
 
     features = []
     for station in stations:
-        station_geojson = {"type": "Feature", "geometry": {"type": "Point", "coordinates": [station["longitude"], station["latitude"]]}, "properties": {"title": station["name"] + "\n" + str(station["bikesAvailable"]) + " bikes available", "icon": "citybike"}}
+        sum_bikes = station["bikesAvailable"] + station["spacesAvailable"]
+
+        station_geojson = {"type": "Feature", "geometry": {"type": "Point", "coordinates": [station["longitude"], station["latitude"]]}, "properties": {"title": station["name"] + "\n" + str(station["bikesAvailable"]) + "/" + str(sum_bikes) + " bikes available", "icon": "citybike"}}
         features.append(station_geojson)
 
     stations_geojson = {"type": "FeatureCollection", "features": features}

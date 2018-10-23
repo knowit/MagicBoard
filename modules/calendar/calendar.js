@@ -206,6 +206,11 @@ Module.register("calendar", {
 				eventWrapper.appendChild(blankCell);
 			}
 
+			//  Title and location
+            var titleLocationWrapper = document.createElement("tr");
+			titleLocationWrapper.className = "titlelocation column";
+
+
 			var titleWrapper = document.createElement("td"),
 				repeatingCountTitle = "";
 
@@ -227,10 +232,21 @@ Module.register("calendar", {
 				this.titleTransform(event.title) + repeatingCountTitle;
 
 			if (!this.config.colored) {
-				titleWrapper.className = "title small bright";
-			} else {
-				titleWrapper.className = "title";
+				titleWrapper.className = "title normal";
 			}
+
+            titleLocationWrapper.appendChild(titleWrapper);
+
+            if(event.location){
+                var locationWrapper = document.createElement("td");
+                locationWrapper.className = "location dimmed";
+                locationWrapper.align = "left";
+                locationWrapper.innerText = event.location;
+
+                titleLocationWrapper.appendChild(locationWrapper);
+            }
+
+            eventWrapper.appendChild(titleLocationWrapper);
 
 			if (this.config.timeFormat === "dateheaders") {
 				if (event.fullDayEvent) {
@@ -238,7 +254,7 @@ Module.register("calendar", {
 					titleWrapper.align = "left";
 				} else {
 					var timeWrapper = document.createElement("td");
-					timeWrapper.className = "time small light";
+					timeWrapper.className = "time small normal";
 					timeWrapper.align = "left";
 					timeWrapper.style.paddingLeft = "2px";
 					var timeFormatString = "";
@@ -259,16 +275,13 @@ Module.register("calendar", {
 					timeWrapper.innerHTML = moment(event.startDate, "x").format(
 						timeFormatString,
 					);
-					eventWrapper.appendChild(timeWrapper);
-					titleWrapper.align = "right";
 				}
 
 				eventWrapper.appendChild(titleWrapper);
 			} else {
 				var timeWrapper = document.createElement("td");
-
-				eventWrapper.appendChild(titleWrapper);
-				//console.log(event.today);
+                timeWrapper.className = "time small light";
+                timeWrapper.align = "right";
 				var now = new Date();
 				// Define second, minute, hour, and day variables
 				var oneSecond = 1000; // 1,000 milliseconds
@@ -277,6 +290,7 @@ Module.register("calendar", {
 				var oneDay = oneHour * 24;
 				if (event.fullDayEvent) {
 					if (event.today) {
+                        timeWrapper.classList.add("blink");
 						timeWrapper.innerHTML = this.capFirst(
 							this.translate("TODAY"),
 						);
@@ -343,7 +357,8 @@ Module.register("calendar", {
 								this.config.getRelative * oneHour
 							) {
 								// If event is within 6 hour, display 'in xxx' time format or moment.fromNow()
-								timeWrapper.innerHTML = this.capFirst(
+                                timeWrapper.classList.add("blink");
+                                timeWrapper.innerHTML = this.capFirst(
 									moment(event.startDate, "x").fromNow(),
 								);
 							} else {
@@ -397,9 +412,6 @@ Module.register("calendar", {
 						);
 					}
 				}
-				//timeWrapper.innerHTML += ' - '+ moment(event.startDate,'x').format('lll');
-				//console.log(event);
-				timeWrapper.className = "time small light";
 				eventWrapper.appendChild(timeWrapper);
 			}
 

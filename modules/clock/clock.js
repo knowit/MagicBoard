@@ -158,11 +158,11 @@ Module.register("clock", {
 
 			var clockHour = document.createElement("div");
 			clockHour.id = "clockHour";
-			clockHour.style.transform = "rotate(" + hour + "deg)";
+			clockHour.style.transform = "move(" + hour + "deg)";
 			clockHour.className = "clockHour";
 			var clockMinute = document.createElement("div");
 			clockMinute.id = "clockMinute";
-			clockMinute.style.transform = "rotate(" + minute + "deg)";
+			clockMinute.style.transform = "move(" + minute + "deg)";
 			clockMinute.className = "clockMinute";
 
 			// Combine analog wrappers
@@ -172,7 +172,7 @@ Module.register("clock", {
 			if (this.config.displaySeconds) {
 				var clockSecond = document.createElement("div");
 				clockSecond.id = "clockSecond";
-				clockSecond.style.transform = "rotate(" + second + "deg)";
+				clockSecond.style.transform = "move(" + second + "deg)";
 				clockSecond.className = "clockSecond";
 				clockSecond.style.backgroundColor = this.config.secondsColor;
 				clockFace.appendChild(clockSecond);
